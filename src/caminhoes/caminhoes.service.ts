@@ -12,7 +12,7 @@ export class CaminhoesService {
   async teste() {
     const client = this.supabase.getClient();
     const { data, error } = await client
-      .rpc("query_now()");
+      .rpc("query_now");
     
     console.log(data);
 
