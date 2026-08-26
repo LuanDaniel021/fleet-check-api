@@ -7,7 +7,7 @@ import {
 import { CreateMedicaoPneuDto } from './dto/create-medicao_pneus.dto';
 import { UpdateMedicaoPneuDto } from './dto/update-medicao_pneus.dto';
 import { SupabaseService } from '../supabase/supabase.service';
-import { MedicaoPneu } from './entities/medicao_pneus.entity';
+import { MedicaoPneu } from './entities/medicao_pneu.entity';
 
 @Injectable()
 export class MedicaoPneusService {
@@ -66,7 +66,7 @@ export class MedicaoPneusService {
       .single();
 
     if (error || !data) {
-      throw new Error(`Erro: ${error.message}`);
+      throw new Error(`Erro: ${error?.message}`);
     }
 
     return data as MedicaoPneu;

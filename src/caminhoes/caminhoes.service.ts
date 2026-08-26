@@ -80,7 +80,7 @@ export class CaminhoesService {
       //console.log(id)
       
     if (error || !data) {
-      throw new Error(`Erro: ${error.message}`);
+      throw new Error(`Erro: ${error?.message}`);
     }
 
     return data as Caminhao;

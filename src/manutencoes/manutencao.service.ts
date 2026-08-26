@@ -65,7 +65,7 @@ export class ManutencaoService {
       .single();
 
     if (error || !data) {
-      throw new Error(`Erro: ${error.message}`);
+      throw new Error(`Erro: ${error?.message}`);
     }
 
     return data as Manutencao;

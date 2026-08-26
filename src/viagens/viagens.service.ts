@@ -66,7 +66,7 @@ export class ViagensService {
       .single();
 
     if (error || !data) {
-      throw new Error(`Error: ${error.message}.`);
+      throw new Error(`Error: ${error?.message}.`);
     }
 
     return data as Viagem;

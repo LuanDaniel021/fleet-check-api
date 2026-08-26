@@ -4,11 +4,10 @@ import {
   NotFoundException,
   InternalServerErrorException,
 } from '@nestjs/common';
-import { CreateMotoristaDto } from './dto/create-motorista.dto';
 import { CreatePneuDto } from './dto/create-pneus.dto';
 import { UpdatePneuDto } from './dto/update-pneus.dto';
 import { SupabaseService } from '../supabase/supabase.service';
-import { Pneu } from './entities/pneus.entity';
+import { Pneu } from './entities/pneu.entity';
 
 @Injectable()
 export class PneusService {
@@ -67,7 +66,7 @@ export class PneusService {
       .single();
 
     if (error || !data) {
-      throw new Error(`Erro: ${error.message}`);
+      throw new Error(`Erro: ${error?.message}`);
     }
 
     return data as Pneu;
