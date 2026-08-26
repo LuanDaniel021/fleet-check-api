@@ -8,6 +8,11 @@ import { ConfigModule } from '@nestjs/config';
 import { CaminhoesController } from './caminhoes/caminhoes.controller';
 import { CaminhoesService } from './caminhoes/caminhoes.service';
 import { CrlvsModule } from './crlvs/crlvs.module';
+import { ViagensModule } from './viagens/viagens.module';
+import { PneusModule } from './pneus/pneus.module';
+import { MedicaoPneusModule } from './medicao_pneus/medicao_pneus.module';
+import { IpvasModule } from './ipvas/ipvas.module';
+import { MotoristasModule } from './motoristas/motoristas.module';
 
 @Module({
   
@@ -15,7 +20,12 @@ import { CrlvsModule } from './crlvs/crlvs.module';
     ConfigModule.forRoot({ isGlobal: true }),
     CaminhoesModule,
     SupabaseModule,
-    CrlvsModule, 
+    CrlvsModule,
+    ViagensModule,
+    PneusModule,
+    MedicaoPneusModule,
+    IpvasModule,
+    MotoristasModule, 
   ],
   controllers: [AppController, CaminhoesController],
   providers: [AppService, CaminhoesService, SupabaseService],
