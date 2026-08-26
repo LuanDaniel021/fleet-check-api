@@ -1,6 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { MedicaoPneusService } from './medicao_pneus.service';
-import { CreateMedicaoPneusDto } from './dto/create-medicao_pneus.dto';
+import { CreateMedicaoPneuDto } from './dto/create-medicao_pneus.dto';
 import { UpdateMedicaoPneuDto } from './dto/update-medicao_pneus.dto';
 
 @Controller('medicao-pneus')
@@ -8,7 +16,7 @@ export class MedicaoPneusController {
   constructor(private readonly medicaoPneusService: MedicaoPneusService) {}
 
   @Post()
-  create(@Body() createMedicaoPneusDto: CreateMedicaoPneusDto) {
+  create(@Body() createMedicaoPneusDto: CreateMedicaoPneuDto) {
     return this.medicaoPneusService.create(createMedicaoPneusDto);
   }
 
@@ -23,7 +31,10 @@ export class MedicaoPneusController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateMedicaoPneusDto: UpdateMedicaoPneuDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateMedicaoPneusDto: UpdateMedicaoPneuDto,
+  ) {
     return this.medicaoPneusService.update(+id, updateMedicaoPneusDto);
   }
 

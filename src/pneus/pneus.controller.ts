@@ -1,6 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { PneusService } from './pneus.service';
-import { CreatePneusDto } from './dto/create-pneus.dto';
+import { CreatePneuDto } from './dto/create-pneus.dto';
 import { UpdatePneuDto } from './dto/update-pneus.dto';
 
 @Controller('pneus')
@@ -8,7 +16,7 @@ export class PneusController {
   constructor(private readonly pneusService: PneusService) {}
 
   @Post()
-  create(@Body() createPneusDto: CreatePneusDto) {
+  create(@Body() createPneusDto: CreatePneuDto) {
     return this.pneusService.create(createPneusDto);
   }
 
