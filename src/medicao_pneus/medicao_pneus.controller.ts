@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { MedicaoPneusService } from './medicao_pneus.service';
 import { CreateMedicaoPneusDto } from './dto/create-medicao_pneus.dto';
-import { UpdateMedicaoPneusDto } from './dto/update-medicao_pneus.dto';
+import { UpdateMedicaoPneuDto } from './dto/update-medicao_pneus.dto';
 
 @Controller('medicao-pneus')
 export class MedicaoPneusController {
@@ -23,7 +23,7 @@ export class MedicaoPneusController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateMedicaoPneusDto: UpdateMedicaoPneusDto) {
+  update(@Param('id') id: string, @Body() updateMedicaoPneusDto: UpdateMedicaoPneuDto) {
     return this.medicaoPneusService.update(+id, updateMedicaoPneusDto);
   }
 

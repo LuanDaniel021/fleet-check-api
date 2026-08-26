@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { PneusService } from './pneus.service';
 import { CreatePneusDto } from './dto/create-pneus.dto';
-import { UpdatePneusDto } from './dto/update-pneus.dto';
+import { UpdatePneuDto } from './dto/update-pneus.dto';
 
 @Controller('pneus')
 export class PneusController {
@@ -23,7 +23,7 @@ export class PneusController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePneusDto: UpdatePneusDto) {
+  update(@Param('id') id: string, @Body() updatePneusDto: UpdatePneuDto) {
     return this.pneusService.update(+id, updatePneusDto);
   }
 

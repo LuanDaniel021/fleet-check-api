@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CreateMedicaoPneusDto } from './dto/create-medicao_pneus.dto';
-import { UpdateMedicaoPneusDto } from './dto/update-medicao_pneus.dto';
+import { UpdateMedicaoPneuDto } from './dto/update-medicao_pneus.dto';
 
 @Injectable()
 export class MedicaoPneusService {
@@ -16,7 +16,7 @@ export class MedicaoPneusService {
     return `This action returns a #${id} medicaoPneus`;
   }
 
-  update(id: number, updateMedicaoPneusDto: UpdateMedicaoPneusDto) {
+  update(id: number, updateMedicaoPneusDto: UpdateMedicaoPneuDto) {
     return `This action updates a #${id} medicaoPneus`;
   }
 
