@@ -1,27 +1,91 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  BadRequestException,
+  NotFoundException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { CreateMedicaoPneuDto } from './dto/create-medicao_pneus.dto';
 import { UpdateMedicaoPneuDto } from './dto/update-medicao_pneus.dto';
+import { SupabaseService } from '../supabase/supabase.service';
+import { MedicaoPneu } from './entities/medicao_pneus.entity';
 
 @Injectable()
 export class MedicaoPneusService {
-  create(_createMedicaoPneusDto: CreateMedicaoPneuDto) {
-    return 'This action adds a new medicaoPneus';
+  constructor(private readonly supabase: SupabaseService) {}
+
+  async create(dto: CreateMedicaoPneuDto): Promise<MedicaoPneu> {
+    const client = this.supabase.getClient();
+    const { data, error } = await client
+      .from('medicao_pneu')
+      .insert(dto)
+      .select()
+      .single();
+
+    if (error || !data) {
+      throw new BadRequestException(`Falha ao cadastrar medição de pneu: ${error?.message}`);
+    }
+
+    return data as MedicaoPneu;
   }
 
-  findAll() {
-    return `This action returns all medicaoPneus`;
+  async findAll(): Promise<MedicaoPneu[]> {
+    const client = this.supabase.getClient();
+    const { data, error } = await client
+      .from('medicao_pneu')
+      .select();
+
+    if (error) {
+      throw new InternalServerErrorException(`Erro ao buscar medições de pneus: ${error.message}`);
+    }
+
+    return data  as MedicaoPneu[];
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} medicaoPneus`;
+  async findOne(id: number): Promise<MedicaoPneu> {
+    const client = this.supabase.getClient();
+    const { data, error } = await client
+      .from('medicao_pneu')
+      .select()
+      .eq('id', id)
+      .single();
+
+    if (error || !data) {
+      throw new NotFoundException(`Medição de pneu com ID ${id} não encontrada.`);
+    }
+
+    return data as MedicaoPneu;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  update(id: number, _updateMedicaoPneusDto: UpdateMedicaoPneuDto) {
-    return `This action updates a #${id} medicaoPneus`;
+  async update(id: number, dto: UpdateMedicaoPneuDto): Promise<MedicaoPneu> {
+    const client = this.supabase.getClient();
+    const { data, error } = await client
+      .from('medicao_pneu')
+      .update(dto)
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error || !data) {
+      throw new Error(`Erro: ${error.message}`);
+    }
+
+    return data as MedicaoPneu;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} medicaoPneus`;
+  async remove(id: number): Promise<MedicaoPneu> {
+    const client = this.supabase.getClient();
+    const { data, error } = await client
+      .from('medicao_pneu')
+      .delete()
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error || !data) {
+      throw new NotFoundException(`Medição de pneu com ID ${id} não encontrada para remoção.`);
+    }
+
+    return data as MedicaoPneu;
   }
+
 }

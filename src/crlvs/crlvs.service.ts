@@ -61,7 +61,7 @@ export class CrlvsService {
       .single();
 
     if (error || !data) {
-      throw new NotFoundException(`Crlv com ID ${id} não encontrado ou falha na atualização.`);
+      throw new Error(`Erro: ${error.message}`);
     }
 
     return data as Crlv;

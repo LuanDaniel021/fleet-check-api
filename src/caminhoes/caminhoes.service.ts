@@ -79,9 +79,8 @@ export class CaminhoesService {
       
       //console.log(id)
       
-    if (error) {
-      //throw new NotFoundException(`Caminhão com ID ${id} não encontrado ou falha na atualização.`);
-      throw new Error(`Erro:  ${error.message}`);
+    if (error || !data) {
+      throw new Error(`Erro: ${error.message}`);
     }
 
     return data as Caminhao;

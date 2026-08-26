@@ -1,26 +1,90 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  BadRequestException,
+  NotFoundException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { CreateViagemDto } from './dto/create-viagem.dto';
 import { UpdateViagemDto } from './dto/update-viagen.dto';
+import { SupabaseService } from '../supabase/supabase.service';
+import { Viagem } from './entities/viagem.entity';
 
 @Injectable()
 export class ViagensService {
-  create(createViagenDto: CreateViagemDto) {
-    return 'This action adds a new viagen';
+  constructor(private readonly supabase: SupabaseService) {}
+
+  async create(dto: CreateViagemDto): Promise<Viagem> {
+    const client = this.supabase.getClient();
+    const { data, error } = await client
+      .from('viagem')
+      .insert(dto)
+      .select()
+      .single();
+
+    if (error || !data) {
+      throw new BadRequestException(`Falha ao cadastrar viagem: ${error?.message}`);
+    }
+
+    return data as Viagem;
   }
 
-  findAll() {
-    return `This action returns all viagens`;
+  async findAll(): Promise<Viagem[]> {
+    const client = this.supabase.getClient();
+    const { data, error } = await client
+      .from('viagem')
+      .select();
+
+    if (error) {
+      throw new InternalServerErrorException(`Erro ao buscar viagens: ${error.message}`);
+    }
+
+    return (data ?? []) as Viagem[];
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} viagen`;
+  async findOne(id: number): Promise<Viagem> {
+    const client = this.supabase.getClient();
+    const { data, error } = await client
+      .from('viagem')
+      .select()
+      .eq('id', id)
+      .single();
+
+    if (error || !data) {
+      throw new NotFoundException(`Viagem com ID ${id} não encontrada.`);
+    }
+
+    return data as Viagem;
   }
 
-  update(id: number, updateViagenDto: UpdateViagemDto) {
-    return `This action updates a #${id} viagen`;
+  async update(id: number, dto: UpdateViagemDto): Promise<Viagem> {
+    const client = this.supabase.getClient();
+    const { data, error } = await client
+      .from('viagem')
+      .update(dto)
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error || !data) {
+      throw new Error(`Error: ${error.message}.`);
+    }
+
+    return data as Viagem;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} viagen`;
+  async remove(id: number): Promise<Viagem> {
+    const client = this.supabase.getClient();
+    const { data, error } = await client
+      .from('viagem')
+      .delete()
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error || !data) {
+      throw new NotFoundException(`Viagem com ID ${id} não encontrada para remoção.`);
+    }
+
+    return data as Viagem;
   }
 }

@@ -1,26 +1,90 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  BadRequestException,
+  NotFoundException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { CreateManutencaoDto } from './dto/create-manutencao.dto';
 import { UpdateManutencaoDto } from './dto/update-manutencao.dto';
-
+import { SupabaseService } from '../supabase/supabase.service';
+import { Manutencao } from './entities/manutencao.entity';
 @Injectable()
 export class ManutencaoService {
-  create(createManutencaoDto: CreateManutencaoDto) {
-    return 'This action adds a new manutencao';
+  constructor(private readonly supabase: SupabaseService) {}
+
+  async create(dto: CreateManutencaoDto): Promise<Manutencao> {
+    const client = this.supabase.getClient();
+    const { data, error } = await client
+      .from('manutencao')
+      .insert(dto)
+      .select()
+      .single();
+
+    if (error || !data) {
+      throw new BadRequestException(`Falha ao cadastrar manutenção: ${error?.message}`);
+    }
+
+    return data as Manutencao;
   }
 
-  findAll() {
-    return `This action returns all manutencao`;
+  async findAll(): Promise<Manutencao[]> {
+    const client = this.supabase.getClient();
+    const { data, error } = await client
+      .from('manutencao')
+      .select();
+
+    if (error) {
+      throw new InternalServerErrorException(`Erro ao buscar manutenções: ${error.message}`);
+    }
+
+    return data  as Manutencao[];
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} manutencao`;
+  async findOne(id: number): Promise<Manutencao> {
+    const client = this.supabase.getClient();
+    const { data, error } = await client
+      .from('manutencao')
+      .select()
+      .eq('id', id)
+      .single();
+
+    if (error || !data) {
+      throw new NotFoundException(`Manutenção com ID ${id} não encontrada.`);
+    }
+
+    return data as Manutencao;
   }
 
-  update(id: number, updateManutencaoDto: UpdateManutencaoDto) {
-    return `This action updates a #${id} manutencao`;
+  async update(id: number, dto: UpdateManutencaoDto): Promise<Manutencao> {
+    const client = this.supabase.getClient();
+    const { data, error } = await client
+      .from('manutencao')
+      .update(dto)
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error || !data) {
+      throw new Error(`Erro: ${error.message}`);
+    }
+
+    return data as Manutencao;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} manutencao`;
+  async remove(id: number): Promise<Manutencao> {
+    const client = this.supabase.getClient();
+    const { data, error } = await client
+      .from('manutencao')
+      .delete()
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error || !data) {
+      throw new NotFoundException(`Manutenção com ID ${id} não encontrada para remoção.`);
+    }
+
+    return data as Manutencao;
   }
+
 }

@@ -66,7 +66,7 @@ export class IpvasService {
       .single();
 
     if (error || !data) {
-      throw new NotFoundException(`Ipva com ID ${id} não encontrado ou falha na atualização.`);
+      throw new Error(`Erro: ${error.message}`);
     }
 
     return data as Ipva;
