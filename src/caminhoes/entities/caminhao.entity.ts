@@ -56,7 +56,7 @@ export class Caminhao {
     description: 'Dados do documento CRLV associado',
     type: () => Crlv,
   })
-  @ManyToOne(() => Crlv, (crlv) => crlv.caminhoes)
+  @ManyToOne(() => Crlv, (crlv) => crlv.caminhao)
   @JoinColumn({ name: 'crlv_id' })
   crlv: Crlv;
 

@@ -11,7 +11,9 @@ export class SupabaseService {
     const key = this.configService.get<string>('SUPABASE_SECRET_KEY');
 
     if (!url || !key) {
-        throw new Error('SUPABASE_URL e SUPABASE_KEY precisam ser definidos no .env');
+      throw new Error(
+        'SUPABASE_URL e SUPABASE_KEY precisam ser definidos no .env',
+      );
     }
 
     this.client = createClient(url, key);
@@ -20,4 +22,5 @@ export class SupabaseService {
   getClient(): SupabaseClient {
     return this.client;
   }
+
 }
