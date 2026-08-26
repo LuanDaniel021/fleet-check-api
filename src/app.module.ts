@@ -13,6 +13,7 @@ import { PneusModule } from './pneus/pneus.module';
 import { MedicaoPneusModule } from './medicao_pneus/medicao_pneus.module';
 import { IpvasModule } from './ipvas/ipvas.module';
 import { MotoristasModule } from './motoristas/motoristas.module';
+import { ManutencaoModule } from './manutencoes/manutencao.module';
 
 @Module({
   
@@ -25,7 +26,8 @@ import { MotoristasModule } from './motoristas/motoristas.module';
     PneusModule,
     MedicaoPneusModule,
     IpvasModule,
-    MotoristasModule, 
+    MotoristasModule,
+    ManutencaoModule, 
   ],
   controllers: [AppController, CaminhoesController],
   providers: [AppService, CaminhoesService, SupabaseService],

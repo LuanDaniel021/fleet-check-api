@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { Caminhao } from '../../caminhoes/entities/caminhao.entity';
-// import { Ipva } from '../../ipva/entities/ipva.entity';
+import { Ipva } from '../../ipvas/entities/ipva.entity';
 
 @Entity('crlv')
 export class Crlv {
@@ -46,7 +46,6 @@ export class Crlv {
   @OneToMany(() => Caminhao, (caminhao) => caminhao.crlv)
   caminhoes: Caminhao[];
 
-  //@OneToMany(() => Ipva, (ipva) => ipva.crlv)
-  //ipvas: Ipva[];
+  @OneToMany(() => Ipva, (ipva) => ipva.crlv)
+  ipvas: Ipva[];
 }
-
