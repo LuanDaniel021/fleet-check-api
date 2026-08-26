@@ -74,11 +74,14 @@ export class CaminhoesService {
       .from('caminhao')
       .update(dto)
       .eq('id', id)
-      .select()
+      .select('*')
       .single();
-
+      
+      //console.log(id)
+      
     if (error) {
-      throw new NotFoundException(`Caminhão com ID ${id} não encontrado ou falha na atualização.`);
+      //throw new NotFoundException(`Caminhão com ID ${id} não encontrado ou falha na atualização.`);
+      throw new Error(`Erro:  ${error.message}`);
     }
 
     return data as Caminhao;

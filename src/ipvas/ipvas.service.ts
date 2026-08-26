@@ -13,7 +13,7 @@ import { Ipva } from './entities/ipva.entity';
 export class IpvasService {
   constructor(private readonly supabase: SupabaseService) {}
 
-  async create(dto: CreateCaminhaoDto): Promise<Ipva> {
+  async create(dto: CreateIpvaDto): Promise<Ipva> {
     const client = this.supabase.getClient();
     const { data, error } = await client
       .from('ipvas')
@@ -56,7 +56,7 @@ export class IpvasService {
     return data as Ipva;
   }
 
-  async update(id: number, dto: UpdateCaminhaoDto): Promise<Ipva> {
+  async update(id: number, dto: UpdateIpvaDto): Promise<Ipva> {
     const client = this.supabase.getClient();
     const { data, error } = await client
       .from('ipva')
