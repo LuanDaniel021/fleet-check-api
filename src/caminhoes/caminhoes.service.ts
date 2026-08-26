@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
 import { CreateCaminhaoDto } from './dto/create-caminhao.dto';
 import { UpdateCaminhaoDto } from './dto/update-caminhao.dto';
 
@@ -11,33 +11,50 @@ export class CaminhoesService {
 
   async teste() {
     const client = this.supabase.getClient();
-    const { data, error } = await client
-      .rpc("query_now");
-    
-    console.log(data);
-
+    const { data, error } = await client.rpc("query_now");
     if (error) throw new BadRequestException(error.message);
     return data;
   }
 
-  create(_createCaminhaoDto: CreateCaminhaoDto) {
-    return 'This action adds a new caminhoe';
+  async create(_createCaminhaoDto: CreateCaminhaoDto) {
+    const client = this.supabase.getClient();
+    const { data, error } = await client
+      .from('caminhao')
+      .insert(_createCaminhaoDto)
+      .select()
+      .single();
+    if (error) throw new Error(error.message);
+    return data;
   }
 
-  findAll() {
-    return `This action returns all caminhoes`;
+  async findAll() {
+    const client = this.supabase.getClient();
+    const { data, error } = await client
+      .from('caminhao')
+      .select('*, crlv(*), motorista(*)');
+    if (error) throw new Error(error.message);
+    return data;    
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} caminhoe`;
+  async findOne(id: number) {
+    const client = this.supabase.getClient();
+    const { data, error } = await client
+      .from('caminhao')
+      .select('*, crlv(*), motorista(*)')
+      .eq('id', id)
+      .single();
+    if (error || !data) throw new NotFoundException('Caminhão não encontrado.');
+    return data;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  update(id: number, updateCaminhaoDto: UpdateCaminhaoDto) {
+  async update(id: number, updateCaminhaoDto: UpdateCaminhaoDto) {
+    const client = this.supabase.getClient();
     return `This action updates a #${id} caminhoe`;
   }
 
-  remove(id: number) {
+  async remove(id: number) {
+    const client = this.supabase.getClient(); 
     return `This action removes a #${id} caminhoe`;
   }
 }
