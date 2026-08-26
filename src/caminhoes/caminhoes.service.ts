@@ -1,6 +1,6 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
-import { CreateCaminhoeDto } from './dto/create-caminhoe.dto';
-import { UpdateCaminhoeDto } from './dto/update-caminhoe.dto';
+import { CreateCaminhaoDto } from './dto/create-caminhao.dto';
+import { UpdateCaminhaoDto } from './dto/update-caminhao.dto';
 
 import { SupabaseService } from '../supabase/supabase.service';
 
@@ -20,7 +20,7 @@ export class CaminhoesService {
     return data;
   }
 
-  create(_createCaminhoeDto: CreateCaminhoeDto) {
+  create(_createCaminhaoDto: CreateCaminhaoDto) {
     return 'This action adds a new caminhoe';
   }
 
@@ -33,7 +33,7 @@ export class CaminhoesService {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  update(id: number, updateCaminhoeDto: UpdateCaminhoeDto) {
+  update(id: number, updateCaminhaoDto: UpdateCaminhaoDto) {
     return `This action updates a #${id} caminhoe`;
   }
 

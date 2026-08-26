@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { CaminhoesService } from './caminhoes.service';
-import { CreateCaminhoeDto } from './dto/create-caminhoe.dto';
-import { UpdateCaminhoeDto } from './dto/update-caminhoe.dto';
+import { CreateCaminhaoDto } from './dto/create-caminhao.dto';
+import { UpdateCaminhaoDto } from './dto/update-caminhao.dto';
 
 @Controller('caminhoes')
 export class CaminhoesController {
@@ -13,8 +13,8 @@ export class CaminhoesController {
   }
 
   @Post()
-  create(@Body() createCaminhoeDto: CreateCaminhoeDto) {
-    return this.caminhoesService.create(createCaminhoeDto);
+  create(@Body() createCaminhaoDto: CreateCaminhaoDto) {
+    return this.caminhoesService.create(createCaminhaoDto);
   }
 
   @Get()
@@ -28,8 +28,8 @@ export class CaminhoesController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCaminhoeDto: UpdateCaminhoeDto) {
-    return this.caminhoesService.update(+id, updateCaminhoeDto);
+  update(@Param('id') id: string, @Body() updateCaminhaoDto: UpdateCaminhaoDto) {
+    return this.caminhoesService.update(+id, updateCaminhaoDto);
   }
 
   @Delete(':id')
