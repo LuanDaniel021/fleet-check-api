@@ -26,4 +26,5 @@ export class CreateIpvaDto {
   @IsString()
   @IsOptional()
   status?: string;
+
 }

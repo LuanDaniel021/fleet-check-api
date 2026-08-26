@@ -77,7 +77,7 @@ export class CaminhoesService {
       .select()
       .single();
 
-    if (error || !data) {
+    if (error) {
       throw new NotFoundException(`Caminhão com ID ${id} não encontrado ou falha na atualização.`);
     }
 
