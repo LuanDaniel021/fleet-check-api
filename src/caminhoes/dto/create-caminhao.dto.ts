@@ -1,7 +1,8 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { IsNumber, IsString, IsOptional, IsInt } from 'class-validator';
+import { TablesInsert } from '../../supabase/supabase.types';
 
-export class CreateCaminhaoDto {
+export class CreateCaminhaoDto implements TablesInsert<'caminhao'> {
   @ApiPropertyOptional({
     description: 'Quilometragem atual do veículo',
     example: 125000.5,
@@ -9,7 +10,7 @@ export class CreateCaminhaoDto {
   })
   @IsNumber({}, { message: 'O campo km_atual deve ser um número.' })
   @IsOptional()
-  km_atual?: number;
+  km_atual?: number | null;
 
   @ApiPropertyOptional({
     description: 'Status operacional do caminhão',
@@ -18,7 +19,7 @@ export class CreateCaminhaoDto {
   })
   @IsString({ message: 'O status deve ser um texto.' })
   @IsOptional()
-  status?: string;
+  status?: string | null;
 
   @ApiPropertyOptional({
     description: 'ID do registro de CRLV a ser vinculado',
@@ -26,7 +27,7 @@ export class CreateCaminhaoDto {
   })
   @IsInt({ message: 'O crlv_id deve ser um número inteiro.' })
   @IsOptional()
-  crlv_id?: number;
+  crlv_id?: number | null;
 
   @ApiPropertyOptional({
     description: 'ID do motorista responsável',
@@ -34,5 +35,5 @@ export class CreateCaminhaoDto {
   })
   @IsInt({ message: 'O motorista_id deve ser um número inteiro.' })
   @IsOptional()
-  motorista_id?: number;
+  motorista_id?: number | null;
 }
