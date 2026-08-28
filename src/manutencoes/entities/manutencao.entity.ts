@@ -13,24 +13,26 @@ export class Manutencao {
   id: number;
 
   @Column({ type: 'integer', nullable: true })
-  caminhao_id: number;
+  caminhao_id: number | null;
 
   @Column({ type: 'varchar', nullable: true })
-  tipo: string;
+  tipo: string | null;
 
   @Column({ type: 'numeric', nullable: true })
-  km_realizacao: number;
+  km_realizacao: number | null;
 
   @Column({ type: 'date', nullable: true })
-  data_manutencao: Date;
+  data_manutencao: string | null;
 
   @Column({ type: 'numeric', nullable: true })
-  custo: number;
+  custo: number | null;
 
   @Column({ type: 'text', nullable: true })
-  observacoes: string;
+  observacoes: string | null;
+
+  // optional
 
   @ManyToOne(() => Caminhao, (caminhao) => caminhao.manutencoes)
   @JoinColumn({ name: 'caminhao_id' })
-  caminhao: Caminhao;
+  caminhao?: Caminhao | null;
 }

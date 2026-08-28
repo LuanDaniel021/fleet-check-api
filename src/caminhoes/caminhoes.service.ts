@@ -15,9 +15,8 @@ export class CaminhoesService {
 
   async teste(): Promise<string> {
     const client = this.supabase.getClient();
-    const { data, error } = await client
-      .rpc<string>('query_now');
-    
+    const { data, error } = await client.rpc('query_now');
+
     if (error) {
       throw new BadRequestException(error.message);
     }
@@ -34,10 +33,12 @@ export class CaminhoesService {
       .single();
 
     if (error || !data) {
-      throw new BadRequestException(`Falha ao cadastrar caminhão: ${error?.message}`);
+      throw new BadRequestException(
+        `Falha ao cadastrar caminhão: ${error?.message}`,
+      );
     }
 
-    return data as Caminhao;
+    return data;
   }
 
   async findAll(): Promise<Caminhao[]> {
@@ -47,10 +48,12 @@ export class CaminhoesService {
       .select('*, crlv(*), motorista(*)');
 
     if (error) {
-      throw new InternalServerErrorException(`Erro ao buscar caminhões: ${error.message}`);
+      throw new InternalServerErrorException(
+        `Erro ao buscar caminhões: ${error.message}`,
+      );
     }
 
-    return (data ?? []) as Caminhao[];
+    return data;
   }
 
   async findOne(id: number): Promise<Caminhao> {
@@ -65,7 +68,7 @@ export class CaminhoesService {
       throw new NotFoundException(`Caminhão com ID ${id} não encontrado.`);
     }
 
-    return data as Caminhao;
+    return data;
   }
 
   async update(id: number, dto: UpdateCaminhaoDto): Promise<Caminhao> {
@@ -76,14 +79,12 @@ export class CaminhoesService {
       .eq('id', id)
       .select('*')
       .single();
-      
-      //console.log(id)
-      
+
     if (error || !data) {
       throw new Error(`Erro: ${error?.message}`);
     }
 
-    return data as Caminhao;
+    return data;
   }
 
   async remove(id: number): Promise<Caminhao> {
@@ -96,10 +97,11 @@ export class CaminhoesService {
       .single();
 
     if (error || !data) {
-      throw new NotFoundException(`Caminhão com ID ${id} não encontrado para remoção.`);
+      throw new NotFoundException(
+        `Caminhão com ID ${id} não encontrado para remoção.`,
+      );
     }
 
-    return data as Caminhao;
+    return data;
   }
-
 }

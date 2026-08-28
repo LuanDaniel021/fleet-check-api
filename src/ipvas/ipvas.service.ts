@@ -16,29 +16,31 @@ export class IpvasService {
   async create(dto: CreateIpvaDto): Promise<Ipva> {
     const client = this.supabase.getClient();
     const { data, error } = await client
-      .from('ipvas')
+      .from('ipva')
       .insert(dto)
       .select()
       .single();
 
     if (error || !data) {
-      throw new BadRequestException(`Falha ao cadastrar ipva: ${error?.message}`);
+      throw new BadRequestException(
+        `Falha ao cadastrar ipva: ${error?.message}`,
+      );
     }
 
-    return data as Ipva;
+    return data;
   }
 
   async findAll(): Promise<Ipva[]> {
     const client = this.supabase.getClient();
-    const { data, error } = await client
-      .from('ipva')
-      .select();
+    const { data, error } = await client.from('ipva').select();
 
     if (error) {
-      throw new InternalServerErrorException(`Erro ao buscar ipvas: ${error.message}`);
+      throw new InternalServerErrorException(
+        `Erro ao buscar ipvas: ${error.message}`,
+      );
     }
 
-    return data  as Ipva[];
+    return data;
   }
 
   async findOne(id: number): Promise<Ipva> {
@@ -53,7 +55,7 @@ export class IpvasService {
       throw new NotFoundException(`Ipva com ID ${id} não encontrado.`);
     }
 
-    return data as Ipva;
+    return data;
   }
 
   async update(id: number, dto: UpdateIpvaDto): Promise<Ipva> {
@@ -69,7 +71,7 @@ export class IpvasService {
       throw new Error(`Erro: ${error?.message}`);
     }
 
-    return data as Ipva;
+    return data;
   }
 
   async remove(id: number): Promise<Ipva> {
@@ -82,10 +84,11 @@ export class IpvasService {
       .single();
 
     if (error || !data) {
-      throw new NotFoundException(`Ipva com ID ${id} não encontrado para remoção.`);
+      throw new NotFoundException(
+        `Ipva com ID ${id} não encontrado para remoção.`,
+      );
     }
 
-    return data as Ipva;
+    return data;
   }
-
 }

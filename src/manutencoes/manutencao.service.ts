@@ -8,6 +8,7 @@ import { CreateManutencaoDto } from './dto/create-manutencao.dto';
 import { UpdateManutencaoDto } from './dto/update-manutencao.dto';
 import { SupabaseService } from '../supabase/supabase.service';
 import { Manutencao } from './entities/manutencao.entity';
+
 @Injectable()
 export class ManutencaoService {
   constructor(private readonly supabase: SupabaseService) {}
@@ -21,23 +22,25 @@ export class ManutencaoService {
       .single();
 
     if (error || !data) {
-      throw new BadRequestException(`Falha ao cadastrar manutenção: ${error?.message}`);
+      throw new BadRequestException(
+        `Falha ao cadastrar manutenção: ${error?.message}`,
+      );
     }
 
-    return data as Manutencao;
+    return data;
   }
 
   async findAll(): Promise<Manutencao[]> {
     const client = this.supabase.getClient();
-    const { data, error } = await client
-      .from('manutencao')
-      .select();
+    const { data, error } = await client.from('manutencao').select();
 
     if (error) {
-      throw new InternalServerErrorException(`Erro ao buscar manutenções: ${error.message}`);
+      throw new InternalServerErrorException(
+        `Erro ao buscar manutenções: ${error.message}`,
+      );
     }
 
-    return data  as Manutencao[];
+    return data;
   }
 
   async findOne(id: number): Promise<Manutencao> {
@@ -52,7 +55,7 @@ export class ManutencaoService {
       throw new NotFoundException(`Manutenção com ID ${id} não encontrada.`);
     }
 
-    return data as Manutencao;
+    return data;
   }
 
   async update(id: number, dto: UpdateManutencaoDto): Promise<Manutencao> {
@@ -68,7 +71,7 @@ export class ManutencaoService {
       throw new Error(`Erro: ${error?.message}`);
     }
 
-    return data as Manutencao;
+    return data;
   }
 
   async remove(id: number): Promise<Manutencao> {
@@ -81,10 +84,11 @@ export class ManutencaoService {
       .single();
 
     if (error || !data) {
-      throw new NotFoundException(`Manutenção com ID ${id} não encontrada para remoção.`);
+      throw new NotFoundException(
+        `Manutenção com ID ${id} não encontrada para remoção.`,
+      );
     }
 
-    return data as Manutencao;
+    return data;
   }
-
 }

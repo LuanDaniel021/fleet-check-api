@@ -22,23 +22,25 @@ export class MedicaoPneusService {
       .single();
 
     if (error || !data) {
-      throw new BadRequestException(`Falha ao cadastrar medição de pneu: ${error?.message}`);
+      throw new BadRequestException(
+        `Falha ao cadastrar medição de pneu: ${error?.message}`,
+      );
     }
 
-    return data as MedicaoPneu;
+    return data;
   }
 
   async findAll(): Promise<MedicaoPneu[]> {
     const client = this.supabase.getClient();
-    const { data, error } = await client
-      .from('medicao_pneu')
-      .select();
+    const { data, error } = await client.from('medicao_pneu').select();
 
     if (error) {
-      throw new InternalServerErrorException(`Erro ao buscar medições de pneus: ${error.message}`);
+      throw new InternalServerErrorException(
+        `Erro ao buscar medições de pneus: ${error.message}`,
+      );
     }
 
-    return data  as MedicaoPneu[];
+    return data;
   }
 
   async findOne(id: number): Promise<MedicaoPneu> {
@@ -50,10 +52,12 @@ export class MedicaoPneusService {
       .single();
 
     if (error || !data) {
-      throw new NotFoundException(`Medição de pneu com ID ${id} não encontrada.`);
+      throw new NotFoundException(
+        `Medição de pneu com ID ${id} não encontrada.`,
+      );
     }
 
-    return data as MedicaoPneu;
+    return data;
   }
 
   async update(id: number, dto: UpdateMedicaoPneuDto): Promise<MedicaoPneu> {
@@ -69,7 +73,7 @@ export class MedicaoPneusService {
       throw new Error(`Erro: ${error?.message}`);
     }
 
-    return data as MedicaoPneu;
+    return data;
   }
 
   async remove(id: number): Promise<MedicaoPneu> {
@@ -82,10 +86,11 @@ export class MedicaoPneusService {
       .single();
 
     if (error || !data) {
-      throw new NotFoundException(`Medição de pneu com ID ${id} não encontrada para remoção.`);
+      throw new NotFoundException(
+        `Medição de pneu com ID ${id} não encontrada para remoção.`,
+      );
     }
 
-    return data as MedicaoPneu;
+    return data;
   }
-
 }

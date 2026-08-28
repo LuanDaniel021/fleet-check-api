@@ -15,24 +15,26 @@ export class Pneu {
   id: number;
 
   @Column({ type: 'integer', nullable: true })
-  caminhao_id: number;
+  caminhao_id: number | null;
 
   @Column({ type: 'varchar', nullable: true })
-  posicao: string;
+  posicao: string | null;
 
   @Column({ type: 'varchar', nullable: true })
-  marca: string;
+  marca: string | null;
 
   @Column({ type: 'numeric', nullable: true })
   sulco_inicial_mm: number;
 
   @Column({ type: 'varchar', nullable: true })
-  status: string;
+  status: string | null;
+
+  // optional
 
   @ManyToOne(() => Caminhao, (caminhao) => caminhao.pneus)
   @JoinColumn({ name: 'caminhao_id' })
-  caminhao: Caminhao;
+  caminhao?: Caminhao | null;
 
   @OneToMany(() => MedicaoPneu, (medicao) => medicao.pneu)
-  medicoes: MedicaoPneu[];
+  medicoes?: MedicaoPneu[];
 }

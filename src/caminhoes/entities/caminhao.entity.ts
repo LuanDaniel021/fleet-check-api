@@ -12,9 +12,10 @@ import { Motorista } from '../../motoristas/entities/motorista.entity';
 import { Viagem } from '../../viagens/entities/viagem.entity';
 import { Pneu } from '../../pneus/entities/pneu.entity';
 import { Manutencao } from '../../manutencoes/entities/manutencao.entity';
+import { Tables } from '../../supabase/supabase.types';
 
 @Entity('caminhao')
-export class Caminhao {
+export class Caminhao implements Tables<'caminhao'> {
   @ApiProperty({
     description: 'ID único do caminhão',
     example: 1,
@@ -28,7 +29,7 @@ export class Caminhao {
     type: Number,
   })
   @Column({ type: 'numeric', nullable: true })
-  km_atual: number;
+  km_atual: number | null;
 
   @ApiPropertyOptional({
     description:
@@ -36,21 +37,21 @@ export class Caminhao {
     example: 'Ativo',
   })
   @Column({ type: 'varchar', nullable: true })
-  status: string;
+  status: string | null;
 
   @ApiPropertyOptional({
     description: 'ID do registro do CRLV vinculado',
     example: 3,
   })
   @Column({ type: 'integer', nullable: true })
-  crlv_id: number;
+  crlv_id: number | null;
 
   @ApiPropertyOptional({
     description: 'ID do motorista responsável',
     example: 12,
   })
   @Column({ type: 'integer', nullable: true })
-  motorista_id: number;
+  motorista_id: number | null;
 
   @ApiPropertyOptional({
     description: 'Dados do documento CRLV associado',
@@ -58,7 +59,7 @@ export class Caminhao {
   })
   @ManyToOne(() => Crlv, (crlv) => crlv.caminhao)
   @JoinColumn({ name: 'crlv_id' })
-  crlv: Crlv;
+  crlv?: Crlv | null;
 
   @ApiPropertyOptional({
     description: 'Motorista vinculado',
@@ -66,26 +67,26 @@ export class Caminhao {
   })
   @ManyToOne(() => Motorista, (motorista) => motorista.caminhoes)
   @JoinColumn({ name: 'motorista_id' })
-  motorista: Motorista;
+  motorista?: Motorista | null;
 
   @ApiPropertyOptional({
     description: 'Histórico de viagens do caminhão',
     type: () => [Viagem],
   })
   @OneToMany(() => Viagem, (viagem) => viagem.caminhao)
-  viagens: Viagem[];
+  viagens?: Viagem[];
 
   @ApiPropertyOptional({
     description: 'Pneus instalados no caminhão',
     type: () => [Pneu],
   })
   @OneToMany(() => Pneu, (pneu) => pneu.caminhao)
-  pneus: Pneu[];
+  pneus?: Pneu[];
 
   @ApiPropertyOptional({
     description: 'Histórico de manutenções',
     type: () => [Manutencao],
   })
   @OneToMany(() => Manutencao, (manutencao) => manutencao.caminhao)
-  manutencoes: Manutencao[];
+  manutencoes?: Manutencao[];
 }

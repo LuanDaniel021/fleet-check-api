@@ -22,23 +22,25 @@ export class ViagensService {
       .single();
 
     if (error || !data) {
-      throw new BadRequestException(`Falha ao cadastrar viagem: ${error?.message}`);
+      throw new BadRequestException(
+        `Falha ao cadastrar viagem: ${error?.message}`,
+      );
     }
 
-    return data as Viagem;
+    return data;
   }
 
   async findAll(): Promise<Viagem[]> {
     const client = this.supabase.getClient();
-    const { data, error } = await client
-      .from('viagem')
-      .select();
+    const { data, error } = await client.from('viagem').select();
 
     if (error) {
-      throw new InternalServerErrorException(`Erro ao buscar viagens: ${error.message}`);
+      throw new InternalServerErrorException(
+        `Erro ao buscar viagens: ${error.message}`,
+      );
     }
 
-    return (data ?? []) as Viagem[];
+    return data;
   }
 
   async findOne(id: number): Promise<Viagem> {
@@ -53,7 +55,7 @@ export class ViagensService {
       throw new NotFoundException(`Viagem com ID ${id} não encontrada.`);
     }
 
-    return data as Viagem;
+    return data;
   }
 
   async update(id: number, dto: UpdateViagemDto): Promise<Viagem> {
@@ -69,7 +71,7 @@ export class ViagensService {
       throw new Error(`Error: ${error?.message}.`);
     }
 
-    return data as Viagem;
+    return data;
   }
 
   async remove(id: number): Promise<Viagem> {
@@ -82,9 +84,11 @@ export class ViagensService {
       .single();
 
     if (error || !data) {
-      throw new NotFoundException(`Viagem com ID ${id} não encontrada para remoção.`);
+      throw new NotFoundException(
+        `Viagem com ID ${id} não encontrada para remoção.`,
+      );
     }
 
-    return data as Viagem;
+    return data;
   }
 }

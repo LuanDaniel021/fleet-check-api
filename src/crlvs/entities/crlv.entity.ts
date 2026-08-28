@@ -1,9 +1,16 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, OneToOne } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany,
+  OneToOne,
+} from 'typeorm';
 import { Caminhao } from '../../caminhoes/entities/caminhao.entity';
 import { Ipva } from '../../ipvas/entities/ipva.entity';
+import { Tables } from '../../supabase/supabase.types';
 
 @Entity('crlv')
-export class Crlv {
+export class Crlv implements Tables<'crlv'> {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -14,38 +21,40 @@ export class Crlv {
   chassi: string;
 
   @Column({ type: 'integer', nullable: true })
-  ano_fabricacao: number;
+  ano_fabricacao: number | null;
 
   @Column({ type: 'integer', nullable: true })
-  ano_modelo: number;
+  ano_modelo: number | null;
 
   @Column({ type: 'integer', nullable: true })
-  exercicio: number;
+  exercicio: number | null;
 
   @Column({ type: 'varchar', nullable: true })
-  crv: string;
+  crv: string | null;
 
   @Column({ type: 'varchar', unique: true, nullable: true })
-  renavam: string;
+  renavam: string | null;
 
   @Column({ type: 'varchar', nullable: true })
-  marca: string;
+  marca: string | null;
 
   @Column({ type: 'varchar', nullable: true })
-  modelo: string;
+  modelo: string | null;
 
   @Column({ type: 'varchar', nullable: true })
-  especie: string;
+  especie: string | null;
 
   @Column({ type: 'varchar', nullable: true })
-  tipo: string;
+  tipo: string | null;
 
   @Column({ type: 'char', length: 2, nullable: true })
-  uf: string;
+  uf: string | null;
+
+  // optional
 
   @OneToOne(() => Caminhao, (caminhao) => caminhao.crlv)
-  caminhao: Caminhao;
+  caminhao?: Caminhao | null;
 
   @OneToMany(() => Ipva, (ipva) => ipva.crlv)
-  ipvas: Ipva[];
+  ipvas?: Ipva[];
 }

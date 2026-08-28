@@ -16,34 +16,36 @@ export class Viagem {
   id: number;
 
   @Column({ type: 'integer', nullable: true })
-  caminhao_id: number;
+  caminhao_id: number | null;
 
   @Column({ type: 'integer', nullable: true })
-  motorista_id: number;
+  motorista_id: number | null;
 
   @Column({ type: 'timestamp', nullable: true })
-  data_inicio: Date;
+  data_inicio: string | null;
 
   @Column({ type: 'timestamp', nullable: true })
-  data_fim: Date;
+  data_fim: string | null;
 
   @Column({ type: 'numeric', nullable: true })
-  km_inicial: number;
+  km_inicial: number | null;
 
   @Column({ type: 'numeric', nullable: true })
-  km_final: number;
+  km_final: number | null;
 
   @Column({ type: 'numeric', nullable: true })
-  distancia_percorrida: number;
+  distancia_percorrida: number | null;
+
+  // optional
 
   @ManyToOne(() => Caminhao, (caminhao) => caminhao.viagens)
   @JoinColumn({ name: 'caminhao_id' })
-  caminhao: Caminhao;
+  caminhao?: Caminhao | null;
 
   @ManyToOne(() => Motorista, (motorista) => motorista.viagens)
   @JoinColumn({ name: 'motorista_id' })
-  motorista: Motorista;
+  motorista?: Motorista | null;
 
   @OneToMany(() => MedicaoPneu, (medicao) => medicao.viagem)
-  medicoes_pneu: MedicaoPneu[];
+  medicoes_pneu?: MedicaoPneu[];
 }
