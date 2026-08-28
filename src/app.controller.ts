@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards, Request } from '@nestjs/common';
+import { Controller, Get, UseGuards } from '@nestjs/common';
 import { AppService } from './app.service';
 import { SupabaseAuthGuard } from './supabase/supabase.jwt-auth.guard';
 
@@ -13,7 +13,7 @@ export class AppController {
 
   @Get('/test')
   @UseGuards(SupabaseAuthGuard)
-  test(@Request() req): Promise<string> {
+  test(): Promise<string> {
     return this.appService.test();
   }
 }
