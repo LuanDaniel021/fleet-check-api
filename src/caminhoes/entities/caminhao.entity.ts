@@ -53,6 +53,8 @@ export class Caminhao implements Tables<'caminhao'> {
   @Column({ type: 'integer', nullable: true })
   motorista_id: number | null;
 
+  // --- Relacionamentos Opcionais ---
+
   @ApiPropertyOptional({
     description: 'Dados do documento CRLV associado',
     type: () => Crlv,
