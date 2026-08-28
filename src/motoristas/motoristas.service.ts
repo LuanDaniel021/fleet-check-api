@@ -22,23 +22,25 @@ export class MotoristasService {
       .single();
 
     if (error || !data) {
-      throw new BadRequestException(`Falha ao cadastrar motorista: ${error?.message}`);
+      throw new BadRequestException(
+        `Falha ao cadastrar motorista: ${error?.message}`,
+      );
     }
 
-    return data as Motorista;
+    return data;
   }
 
   async findAll(): Promise<Motorista[]> {
     const client = this.supabase.getClient();
-    const { data, error } = await client
-      .from('motorista')
-      .select();
+    const { data, error } = await client.from('motorista').select();
 
     if (error) {
-      throw new InternalServerErrorException(`Erro ao buscar motoristas: ${error.message}`);
+      throw new InternalServerErrorException(
+        `Erro ao buscar motoristas: ${error.message}`,
+      );
     }
 
-    return data  as Motorista[];
+    return data;
   }
 
   async findOne(id: number): Promise<Motorista> {
@@ -53,7 +55,7 @@ export class MotoristasService {
       throw new NotFoundException(`Motorista com ID ${id} não encontrado.`);
     }
 
-    return data as Motorista;
+    return data;
   }
 
   async update(id: number, dto: UpdateMotoristaDto): Promise<Motorista> {
@@ -69,7 +71,7 @@ export class MotoristasService {
       throw new Error(`Erro: ${error?.message}`);
     }
 
-    return data as Motorista;
+    return data;
   }
 
   async remove(id: number): Promise<Motorista> {
@@ -82,10 +84,11 @@ export class MotoristasService {
       .single();
 
     if (error || !data) {
-      throw new NotFoundException(`Motorista com ID ${id} não encontrado para remoção.`);
+      throw new NotFoundException(
+        `Motorista com ID ${id} não encontrado para remoção.`,
+      );
     }
 
-    return data as Motorista;
+    return data;
   }
-
 }

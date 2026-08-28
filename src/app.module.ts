@@ -16,7 +16,6 @@ import { MotoristasModule } from './motoristas/motoristas.module';
 import { ManutencaoModule } from './manutencoes/manutencao.module';
 
 @Module({
-  
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     CaminhoesModule,
@@ -27,7 +26,7 @@ import { ManutencaoModule } from './manutencoes/manutencao.module';
     MedicaoPneusModule,
     IpvasModule,
     MotoristasModule,
-    ManutencaoModule, 
+    ManutencaoModule,
   ],
   controllers: [AppController, CaminhoesController],
   providers: [AppService, CaminhoesService, SupabaseService],

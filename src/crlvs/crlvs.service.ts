@@ -1,4 +1,9 @@
-import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateCrlvDto } from './dto/create-crlv.dto';
 import { UpdateCrlvDto } from './dto/update-crlv.dto';
 import { SupabaseService } from '../supabase/supabase.service';
@@ -6,7 +11,7 @@ import { Crlv } from './entities/crlv.entity';
 
 @Injectable()
 export class CrlvsService {
-  constructor(private readonly supabase: SupabaseService) { }
+  constructor(private readonly supabase: SupabaseService) {}
 
   async create(dto: CreateCrlvDto): Promise<Crlv> {
     const client = this.supabase.getClient();
@@ -14,26 +19,28 @@ export class CrlvsService {
       .from('crlv')
       .insert(dto)
       .select()
-      .single()
+      .single();
 
     if (error) {
-      throw new BadRequestException(`Falha ao cadastrar crlv: ${error?.message}`);
+      throw new BadRequestException(
+        `Falha ao cadastrar crlv: ${error?.message}`,
+      );
     }
 
-    return data as Crlv;
+    return data;
   }
 
   async findAll(): Promise<Crlv[]> {
     const client = this.supabase.getClient();
-    const { data, error } = await client
-      .from('crlv')
-      .select();
+    const { data, error } = await client.from('crlv').select();
 
     if (error) {
-      throw new InternalServerErrorException(`Erro ao buscar crlv: ${error.message}`);
+      throw new InternalServerErrorException(
+        `Erro ao buscar crlv: ${error.message}`,
+      );
     }
 
-    return data as Crlv[];
+    return data;
   }
 
   async findOne(id: number): Promise<Crlv> {
@@ -48,7 +55,7 @@ export class CrlvsService {
       throw new NotFoundException(`Crlv com ID ${id} não encontrado.`);
     }
 
-    return data as Crlv;
+    return data;
   }
 
   async update(id: number, dto: UpdateCrlvDto): Promise<Crlv> {
@@ -64,7 +71,7 @@ export class CrlvsService {
       throw new Error(`Erro: ${error?.message}`);
     }
 
-    return data as Crlv;
+    return data;
   }
 
   async remove(id: number): Promise<Crlv> {
@@ -77,10 +84,11 @@ export class CrlvsService {
       .single();
 
     if (error || !data) {
-      throw new NotFoundException(`Crlv com ID ${id} não encontrado para remoção.`);
+      throw new NotFoundException(
+        `Crlv com ID ${id} não encontrado para remoção.`,
+      );
     }
 
-    return data as Crlv;
+    return data;
   }
-
 }
