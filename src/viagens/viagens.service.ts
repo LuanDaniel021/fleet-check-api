@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { CreateViagemDto } from './dto/create-viagem.dto';
-import { UpdateViagemDto } from './dto/update-viagen.dto';
+import { UpdateViagemDto } from './dto/update-viagem.dto';
 import { SupabaseService } from '../supabase/supabase.service';
 import { Viagem } from './entities/viagem.entity';
 

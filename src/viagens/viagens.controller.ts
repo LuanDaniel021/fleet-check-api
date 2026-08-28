@@ -1,34 +1,96 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  ParseIntPipe,
+  HttpCode,
+  HttpStatus,
+} from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiParam,
+  ApiNotFoundResponse,
+  ApiBadRequestResponse,
+} from '@nestjs/swagger';
 import { ViagensService } from './viagens.service';
 import { CreateViagemDto } from './dto/create-viagem.dto';
-import { UpdateViagemDto } from './dto/update-viagen.dto';
+import { UpdateViagemDto } from './dto/update-viagem.dto';
+import { Viagem } from './entities/viagem.entity';
 
+@ApiTags('Viagens')
 @Controller('viagens')
 export class ViagensController {
   constructor(private readonly viagensService: ViagensService) {}
 
   @Post()
-  create(@Body() createViagenDto: CreateViagemDto) {
-    return this.viagensService.create(createViagenDto);
+  @ApiOperation({ summary: 'Cadastra uma nova viagem' })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: 'Viagem cadastrada com sucesso.',
+    type: Viagem,
+  })
+  @ApiBadRequestResponse({ description: 'Dados de entrada inválidos.' })
+  create(@Body() createViagemDto: CreateViagemDto): Promise<Viagem> {
+    return this.viagensService.create(createViagemDto);
   }
 
   @Get()
-  findAll() {
+  @ApiOperation({ summary: 'Lista todas as viagens cadastradas' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Lista de viagens retornada com sucesso.',
+    type: [Viagem],
+  })
+  findAll(): Promise<Viagem[]> {
     return this.viagensService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.viagensService.findOne(+id);
+  @ApiOperation({ summary: 'Busca uma viagem pelo ID' })
+  @ApiParam({ name: 'id', description: 'ID da viagem', example: 1 })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Viagem encontrada.',
+    type: Viagem,
+  })
+  @ApiNotFoundResponse({ description: 'Viagem não encontrada.' })
+  findOne(@Param('id', ParseIntPipe) id: number): Promise<Viagem> {
+    return this.viagensService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateViagenDto: UpdateViagemDto) {
-    return this.viagensService.update(+id, updateViagenDto);
+  @ApiOperation({ summary: 'Atualiza dados de uma viagem existente' })
+  @ApiParam({ name: 'id', description: 'ID da viagem', example: 1 })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Viagem atualizada com sucesso.',
+    type: Viagem,
+  })
+  @ApiNotFoundResponse({ description: 'Viagem não encontrada.' })
+  @ApiBadRequestResponse({ description: 'Dados de entrada inválidos.' })
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateViagemDto: UpdateViagemDto,
+  ): Promise<Viagem> {
+    return this.viagensService.update(id, updateViagemDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.viagensService.remove(+id);
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiOperation({ summary: 'Remove uma viagem pelo ID' })
+  @ApiParam({ name: 'id', description: 'ID da viagem', example: 1 })
+  @ApiResponse({
+    status: HttpStatus.NO_CONTENT,
+    description: 'Viagem removida com sucesso.',
+  })
+  @ApiNotFoundResponse({ description: 'Viagem não encontrada.' })
+  remove(@Param('id', ParseIntPipe) id: number): Promise<Viagem> {
+    return this.viagensService.remove(id);
   }
 }
