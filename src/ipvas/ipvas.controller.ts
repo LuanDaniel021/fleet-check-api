@@ -7,7 +7,6 @@ import {
   Param,
   Delete,
   ParseIntPipe,
-  HttpCode,
   HttpStatus,
 } from '@nestjs/common';
 import {
@@ -82,11 +81,10 @@ export class IpvasController {
   }
 
   @Delete(':id')
-  @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({ summary: 'Remove um registro de IPVA pelo ID' })
   @ApiParam({ name: 'id', description: 'ID do IPVA', example: 1 })
   @ApiResponse({
-    status: HttpStatus.NO_CONTENT,
+    status: HttpStatus.OK,
     description: 'IPVA removido com sucesso.',
   })
   @ApiNotFoundResponse({ description: 'IPVA não encontrado.' })

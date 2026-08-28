@@ -1,10 +1,4 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  OneToMany,
-  OneToOne,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Caminhao } from '../../caminhoes/entities/caminhao.entity';
 import { Ipva } from '../../ipvas/entities/ipva.entity';
@@ -123,8 +117,8 @@ export class Crlv implements Tables<'crlv'> {
     type: () => Caminhao,
     nullable: true,
   })
-  @OneToOne(() => Caminhao, (caminhao) => caminhao.crlv)
-  caminhao?: Caminhao | null;
+  @OneToMany(() => Caminhao, (caminhao) => caminhao.crlv)
+  caminhoes?: Caminhao[];
 
   @ApiPropertyOptional({
     description:

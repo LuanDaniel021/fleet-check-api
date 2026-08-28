@@ -7,7 +7,6 @@ import {
   Param,
   Delete,
   ParseIntPipe,
-  HttpCode,
   HttpStatus,
 } from '@nestjs/common';
 import {
@@ -82,11 +81,10 @@ export class CrlvsController {
   }
 
   @Delete(':id')
-  @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({ summary: 'Remove um CRLV pelo ID' })
   @ApiParam({ name: 'id', description: 'ID do CRLV', example: 3 })
   @ApiResponse({
-    status: HttpStatus.NO_CONTENT,
+    status: HttpStatus.OK,
     description: 'CRLV removido com sucesso.',
   })
   @ApiNotFoundResponse({ description: 'CRLV não encontrado.' })

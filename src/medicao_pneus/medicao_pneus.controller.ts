@@ -7,7 +7,6 @@ import {
   Param,
   Delete,
   ParseIntPipe,
-  HttpCode,
   HttpStatus,
 } from '@nestjs/common';
 import {
@@ -84,11 +83,10 @@ export class MedicaoPneusController {
   }
 
   @Delete(':id')
-  @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({ summary: 'Remove uma medição de pneu pelo ID' })
   @ApiParam({ name: 'id', description: 'ID da medição', example: 1 })
   @ApiResponse({
-    status: HttpStatus.NO_CONTENT,
+    status: HttpStatus.OK,
     description: 'Medição removida com sucesso.',
   })
   @ApiNotFoundResponse({ description: 'Medição não encontrada.' })

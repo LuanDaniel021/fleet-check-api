@@ -13,7 +13,7 @@ export class SupabaseService {
 
     if (!url || !key) {
       throw new Error(
-        'SUPABASE_URL e SUPABASE_KEY precisam ser definidos no .env',
+        'SUPABASE_URL e SUPABASE_SECRET_KEY precisam ser definidos no .env',
       );
     }
 

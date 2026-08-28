@@ -8,7 +8,12 @@ describe('IpvasController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [IpvasController],
-      providers: [IpvasService],
+      providers: [
+        {
+          provide: IpvasService,
+          useValue: {},
+        },
+      ],
     }).compile();
 
     controller = module.get<IpvasController>(IpvasController);
