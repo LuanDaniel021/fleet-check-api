@@ -1,6 +1,5 @@
 import {
   Injectable,
-  BadRequestException,
   NotFoundException,
   InternalServerErrorException,
 } from '@nestjs/common';
@@ -8,6 +7,7 @@ import { CreatePneuDto } from './dto/create-pneus.dto';
 import { UpdatePneuDto } from './dto/update-pneus.dto';
 import { SupabaseService } from '../supabase/supabase.service';
 import { Pneu } from './entities/pneu.entity';
+import { throwSupabaseError } from '../supabase/supabase-error.util';
 
 @Injectable()
 export class PneusService {
@@ -21,24 +21,22 @@ export class PneusService {
       .select()
       .single();
 
-    if (error || !data) {
-      throw new BadRequestException(`Falha ao cadastrar pneu: ${error?.message}`);
-    }
+    if (error) throwSupabaseError(error, 'o pneu', 'cadastrar');
+    if (!data)
+      throw new InternalServerErrorException(
+        'O pneu não foi retornado após o cadastro.',
+      );
 
-    return data as Pneu;
+    return data;
   }
 
   async findAll(): Promise<Pneu[]> {
     const client = this.supabase.getClient();
-    const { data, error } = await client
-      .from('pneu')
-      .select();
+    const { data, error } = await client.from('pneu').select();
 
-    if (error) {
-      throw new InternalServerErrorException(`Erro ao buscar pneus: ${error.message}`);
-    }
+    if (error) throwSupabaseError(error, 'os pneus', 'buscar');
 
-    return data  as Pneu[];
+    return data ?? [];
   }
 
   async findOne(id: number): Promise<Pneu> {
@@ -49,11 +47,10 @@ export class PneusService {
       .eq('id', id)
       .single();
 
-    if (error || !data) {
-      throw new NotFoundException(`Pneu com ID ${id} não encontrado.`);
-    }
+    if (error) throwSupabaseError(error, 'o pneu', 'buscar');
+    if (!data) throw new NotFoundException(`Pneu com ID ${id} não encontrado.`);
 
-    return data as Pneu;
+    return data;
   }
 
   async update(id: number, dto: UpdatePneuDto): Promise<Pneu> {
@@ -65,11 +62,10 @@ export class PneusService {
       .select()
       .single();
 
-    if (error || !data) {
-      throw new Error(`Erro: ${error?.message}`);
-    }
+    if (error) throwSupabaseError(error, 'o pneu', 'atualizar');
+    if (!data) throw new NotFoundException(`Pneu com ID ${id} não encontrado.`);
 
-    return data as Pneu;
+    return data;
   }
 
   async remove(id: number): Promise<Pneu> {
@@ -81,11 +77,13 @@ export class PneusService {
       .select()
       .single();
 
-    if (error || !data) {
-      throw new NotFoundException(`Pneu com ID ${id} não encontrado para remoção.`);
+    if (error) throwSupabaseError(error, 'o pneu', 'remover');
+    if (!data) {
+      throw new NotFoundException(
+        `Pneu com ID ${id} não encontrado para remoção.`,
+      );
     }
 
-    return data as Pneu;
+    return data;
   }
-
 }

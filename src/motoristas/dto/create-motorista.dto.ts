@@ -1,19 +1,37 @@
 import { IsString, IsOptional } from 'class-validator';
+import { ApiPropertyOptional } from '@nestjs/swagger';
+import { TablesInsert } from '../../supabase/supabase.types';
 
-export class CreateMotoristaDto {
+export class CreateMotoristaDto implements TablesInsert<'motorista'> {
+  @ApiPropertyOptional({
+    description: 'Nome completo do motorista',
+    example: 'Carlos Silva',
+  })
   @IsString()
   @IsOptional()
-  nome?: string;
+  nome?: string | null;
 
+  @ApiPropertyOptional({
+    description: 'Número do CPF do motorista',
+    example: '123.456.789-00',
+  })
   @IsString()
   @IsOptional()
-  cpf?: string;
+  cpf?: string | null;
 
+  @ApiPropertyOptional({
+    description: 'Número do registro da CNH',
+    example: '12345678900',
+  })
   @IsString()
   @IsOptional()
-  numero_cnh?: string;
+  numero_cnh?: string | null;
 
+  @ApiPropertyOptional({
+    description: 'Categoria da CNH (ex: E, D, AE)',
+    example: 'E',
+  })
   @IsString()
   @IsOptional()
-  categoria_cnh?: string;
+  categoria_cnh?: string | null;
 }

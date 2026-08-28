@@ -5,32 +5,78 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { Tables } from '../../supabase/supabase.types';
 import { Caminhao } from '../../caminhoes/entities/caminhao.entity';
 
 @Entity('manutencao')
-export class Manutencao {
+export class Manutencao implements Tables<'manutencao'> {
+  @ApiProperty({
+    description: 'ID único do registro de manutenção',
+    example: 1,
+  })
   @PrimaryGeneratedColumn()
   id: number;
 
+  @ApiPropertyOptional({
+    description: 'ID do caminhão que recebeu a manutenção',
+    example: 1,
+    nullable: true,
+  })
   @Column({ type: 'integer', nullable: true })
-  caminhao_id: number;
+  caminhao_id: number | null;
 
+  @ApiPropertyOptional({
+    description:
+      'Tipo de manutenção realizada (ex: Preventiva, Corretiva, Troca de Óleo)',
+    example: 'Preventiva',
+    nullable: true,
+  })
   @Column({ type: 'varchar', nullable: true })
-  tipo: string;
+  tipo: string | null;
 
+  @ApiPropertyOptional({
+    description: 'Quilometragem do caminhão no momento do serviço',
+    example: 125000.0,
+    type: Number,
+    nullable: true,
+  })
   @Column({ type: 'numeric', nullable: true })
-  km_realizacao: number;
+  km_realizacao: number | null;
 
+  @ApiPropertyOptional({
+    description: 'Data de realização da manutenção',
+    example: '2026-08-20',
+    nullable: true,
+  })
   @Column({ type: 'date', nullable: true })
-  data_manutencao: Date;
+  data_manutencao: string | null;
 
+  @ApiPropertyOptional({
+    description: 'Custo total do serviço (em R$)',
+    example: 850.5,
+    type: Number,
+    nullable: true,
+  })
   @Column({ type: 'numeric', nullable: true })
-  custo: number;
+  custo: number | null;
 
+  @ApiPropertyOptional({
+    description: 'Observações e detalhes sobre as peças ou serviços prestados',
+    example: 'Troca do filtro de combustível e alinhamento do eixo dianteiro.',
+    nullable: true,
+  })
   @Column({ type: 'text', nullable: true })
-  observacoes: string;
+  observacoes: string | null;
 
+  // --- Relacionamentos Opcionais ---
+
+  @ApiPropertyOptional({
+    description: 'Caminhão associado a esta manutenção',
+    type: () => Caminhao,
+    nullable: true,
+  })
   @ManyToOne(() => Caminhao, (caminhao) => caminhao.manutencoes)
   @JoinColumn({ name: 'caminhao_id' })
-  caminhao: Caminhao;
+  caminhao?: Caminhao | null;
 }

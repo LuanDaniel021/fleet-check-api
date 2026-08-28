@@ -1,13 +1,13 @@
 import {
   Injectable,
-  BadRequestException,
-  NotFoundException,
   InternalServerErrorException,
+  NotFoundException,
 } from '@nestjs/common';
 import { CreateViagemDto } from './dto/create-viagem.dto';
-import { UpdateViagemDto } from './dto/update-viagen.dto';
+import { UpdateViagemDto } from './dto/update-viagem.dto';
 import { SupabaseService } from '../supabase/supabase.service';
 import { Viagem } from './entities/viagem.entity';
+import { throwSupabaseError } from '../supabase/supabase-error.util';
 
 @Injectable()
 export class ViagensService {
@@ -18,42 +18,44 @@ export class ViagensService {
     const { data, error } = await client
       .from('viagem')
       .insert(dto)
-      .select()
+      .select('*, caminhao(*), motorista(*)')
       .single();
 
-    if (error || !data) {
-      throw new BadRequestException(`Falha ao cadastrar viagem: ${error?.message}`);
-    }
+    if (error) throwSupabaseError(error, 'a viagem', 'cadastrar');
+    if (!data)
+      throw new InternalServerErrorException(
+        'A viagem não foi retornada após o cadastro.',
+      );
 
-    return data as Viagem;
+    return data;
   }
 
   async findAll(): Promise<Viagem[]> {
     const client = this.supabase.getClient();
     const { data, error } = await client
       .from('viagem')
-      .select();
+      .select('*, caminhao(*), motorista(*)');
 
-    if (error) {
-      throw new InternalServerErrorException(`Erro ao buscar viagens: ${error.message}`);
-    }
+    if (error) throwSupabaseError(error, 'as viagens', 'buscar');
 
-    return (data ?? []) as Viagem[];
+    return data || [];
   }
 
   async findOne(id: number): Promise<Viagem> {
     const client = this.supabase.getClient();
     const { data, error } = await client
       .from('viagem')
-      .select()
+      .select('*, caminhao(*), motorista(*)')
       .eq('id', id)
       .single();
 
-    if (error || !data) {
+    if (error) throwSupabaseError(error, 'a viagem', 'buscar');
+
+    if (!data) {
       throw new NotFoundException(`Viagem com ID ${id} não encontrada.`);
     }
 
-    return data as Viagem;
+    return data;
   }
 
   async update(id: number, dto: UpdateViagemDto): Promise<Viagem> {
@@ -62,14 +64,16 @@ export class ViagensService {
       .from('viagem')
       .update(dto)
       .eq('id', id)
-      .select()
+      .select('*, caminhao(*), motorista(*)')
       .single();
 
-    if (error || !data) {
-      throw new Error(`Error: ${error?.message}.`);
+    if (error) throwSupabaseError(error, 'a viagem', 'atualizar');
+
+    if (!data) {
+      throw new NotFoundException(`Viagem com ID ${id} não encontrada.`);
     }
 
-    return data as Viagem;
+    return data;
   }
 
   async remove(id: number): Promise<Viagem> {
@@ -78,13 +82,17 @@ export class ViagensService {
       .from('viagem')
       .delete()
       .eq('id', id)
-      .select()
+      .select('*, caminhao(*), motorista(*)')
       .single();
 
-    if (error || !data) {
-      throw new NotFoundException(`Viagem com ID ${id} não encontrada para remoção.`);
+    if (error) throwSupabaseError(error, 'a viagem', 'remover');
+
+    if (!data) {
+      throw new NotFoundException(
+        `Viagem com ID ${id} não encontrada para remoção.`,
+      );
     }
 
-    return data as Viagem;
+    return data;
   }
 }

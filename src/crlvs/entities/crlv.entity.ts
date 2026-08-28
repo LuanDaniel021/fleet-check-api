@@ -1,51 +1,130 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, OneToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Caminhao } from '../../caminhoes/entities/caminhao.entity';
 import { Ipva } from '../../ipvas/entities/ipva.entity';
+import { Tables } from '../../supabase/supabase.types';
 
 @Entity('crlv')
-export class Crlv {
+export class Crlv implements Tables<'crlv'> {
+  @ApiProperty({
+    description: 'ID único do registro de CRLV',
+    example: 3,
+  })
   @PrimaryGeneratedColumn()
   id: number;
 
+  @ApiProperty({
+    description: 'Placa do veículo',
+    example: 'ABC1D23',
+  })
   @Column({ type: 'varchar', unique: true })
   placa: string;
 
+  @ApiProperty({
+    description: 'Número do chassi do veículo',
+    example: '9BWZZZ377VT001234',
+  })
   @Column({ type: 'varchar', unique: true })
   chassi: string;
 
+  @ApiPropertyOptional({
+    description: 'Ano de fabricação do veículo',
+    example: 2021,
+    type: Number,
+    nullable: true,
+  })
   @Column({ type: 'integer', nullable: true })
-  ano_fabricacao: number;
+  ano_fabricacao: number | null;
 
+  @ApiPropertyOptional({
+    description: 'Ano do modelo do veículo',
+    example: 2022,
+    type: Number,
+    nullable: true,
+  })
   @Column({ type: 'integer', nullable: true })
-  ano_modelo: number;
+  ano_modelo: number | null;
 
+  @ApiPropertyOptional({
+    description: 'Ano do exercício atual do licenciamento',
+    example: 2026,
+    type: Number,
+    nullable: true,
+  })
   @Column({ type: 'integer', nullable: true })
-  exercicio: number;
+  exercicio: number | null;
 
+  @ApiPropertyOptional({
+    description: 'Número do CRV (Certificado de Registro de Veículo)',
+    example: '1234567890',
+    nullable: true,
+  })
   @Column({ type: 'varchar', nullable: true })
-  crv: string;
+  crv: string | null;
 
+  @ApiPropertyOptional({
+    description: 'Número do Código RENAVAM',
+    example: '00123456789',
+    nullable: true,
+  })
   @Column({ type: 'varchar', unique: true, nullable: true })
-  renavam: string;
+  renavam: string | null;
 
+  @ApiPropertyOptional({
+    description: 'Marca do veículo',
+    example: 'Volvo',
+    nullable: true,
+  })
   @Column({ type: 'varchar', nullable: true })
-  marca: string;
+  marca: string | null;
 
+  @ApiPropertyOptional({
+    description: 'Modelo do veículo',
+    example: 'FH 540 6x4',
+    nullable: true,
+  })
   @Column({ type: 'varchar', nullable: true })
-  modelo: string;
+  modelo: string | null;
 
+  @ApiPropertyOptional({
+    description: 'Espécie do veículo (ex: Carga, Passageiro)',
+    example: 'Carga',
+    nullable: true,
+  })
   @Column({ type: 'varchar', nullable: true })
-  especie: string;
+  especie: string | null;
 
+  @ApiPropertyOptional({
+    description: 'Tipo do veículo (ex: Trator, Reboque)',
+    example: 'Caminhão Trator',
+    nullable: true,
+  })
   @Column({ type: 'varchar', nullable: true })
-  tipo: string;
+  tipo: string | null;
 
+  @ApiPropertyOptional({
+    description: 'UF do registro do veículo (2 caracteres)',
+    example: 'PR',
+    nullable: true,
+  })
   @Column({ type: 'char', length: 2, nullable: true })
-  uf: string;
+  uf: string | null;
 
-  @OneToOne(() => Caminhao, (caminhao) => caminhao.crlv)
-  caminhao: Caminhao;
+  // --- Relacionamentos Opcionais ---
 
+  @ApiPropertyOptional({
+    description: 'Caminhão associado a este CRLV',
+    type: () => Caminhao,
+    nullable: true,
+  })
+  @OneToMany(() => Caminhao, (caminhao) => caminhao.crlv)
+  caminhoes?: Caminhao[];
+
+  @ApiPropertyOptional({
+    description:
+      'Histórico de registros de IPVA vinculados a este licenciamento',
+    type: () => [Ipva],
+  })
   @OneToMany(() => Ipva, (ipva) => ipva.crlv)
-  ipvas: Ipva[];
+  ipvas?: Ipva[];
 }

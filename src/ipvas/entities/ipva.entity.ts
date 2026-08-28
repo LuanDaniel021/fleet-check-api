@@ -1,27 +1,73 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { Tables } from '../../supabase/supabase.types';
 import { Crlv } from '../../crlvs/entities/crlv.entity';
 
 @Entity('ipva')
-export class Ipva {
+export class Ipva implements Tables<'ipva'> {
+  @ApiProperty({
+    description: 'ID único do registro de IPVA',
+    example: 1,
+  })
   @PrimaryGeneratedColumn()
   id: number;
 
+  @ApiPropertyOptional({
+    description: 'ID do CRLV vinculado a este IPVA',
+    example: 3,
+    nullable: true,
+  })
   @Column({ type: 'integer', nullable: true })
-  crlv_id: number;
+  crlv_id: number | null;
 
+  @ApiPropertyOptional({
+    description: 'Ano de referência do imposto',
+    example: 2026,
+    type: Number,
+    nullable: true,
+  })
   @Column({ type: 'integer', nullable: true })
-  ano_referencia: number;
+  ano_referencia: number | null;
 
+  @ApiPropertyOptional({
+    description: 'Data de vencimento do IPVA',
+    example: '2026-03-15',
+    nullable: true,
+  })
   @Column({ type: 'date', nullable: true })
-  data_vencimento: Date;
+  data_vencimento: string | null;
 
+  @ApiPropertyOptional({
+    description: 'Valor total do IPVA (em R$)',
+    example: 2450.0,
+    type: Number,
+    nullable: true,
+  })
   @Column({ type: 'numeric', nullable: true })
-  valor: number;
+  valor: number | null;
 
+  @ApiPropertyOptional({
+    description: 'Status do pagamento (ex: Pago, Pendente, Atrasado)',
+    example: 'Pago',
+    nullable: true,
+  })
   @Column({ type: 'varchar', nullable: true })
-  status: string;
+  status: string | null;
 
+  // --- Relacionamentos Opcionais ---
+
+  @ApiPropertyOptional({
+    description: 'Documento CRLV associado a este IPVA',
+    type: () => Crlv,
+    nullable: true,
+  })
   @ManyToOne(() => Crlv, (crlv) => crlv.ipvas)
   @JoinColumn({ name: 'crlv_id' })
-  crlv: Crlv;
+  crlv?: Crlv | null;
 }

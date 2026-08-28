@@ -1,6 +1,5 @@
 import {
   Injectable,
-  BadRequestException,
   NotFoundException,
   InternalServerErrorException,
 } from '@nestjs/common';
@@ -8,6 +7,7 @@ import { CreateMotoristaDto } from './dto/create-motorista.dto';
 import { UpdateMotoristaDto } from './dto/update-motorista.dto';
 import { SupabaseService } from '../supabase/supabase.service';
 import { Motorista } from './entities/motorista.entity';
+import { throwSupabaseError } from '../supabase/supabase-error.util';
 
 @Injectable()
 export class MotoristasService {
@@ -21,24 +21,22 @@ export class MotoristasService {
       .select()
       .single();
 
-    if (error || !data) {
-      throw new BadRequestException(`Falha ao cadastrar motorista: ${error?.message}`);
-    }
+    if (error) throwSupabaseError(error, 'o motorista', 'cadastrar');
+    if (!data)
+      throw new InternalServerErrorException(
+        'O motorista não foi retornado após o cadastro.',
+      );
 
-    return data as Motorista;
+    return data;
   }
 
   async findAll(): Promise<Motorista[]> {
     const client = this.supabase.getClient();
-    const { data, error } = await client
-      .from('motorista')
-      .select();
+    const { data, error } = await client.from('motorista').select();
 
-    if (error) {
-      throw new InternalServerErrorException(`Erro ao buscar motoristas: ${error.message}`);
-    }
+    if (error) throwSupabaseError(error, 'os motoristas', 'buscar');
 
-    return data  as Motorista[];
+    return data ?? [];
   }
 
   async findOne(id: number): Promise<Motorista> {
@@ -49,11 +47,11 @@ export class MotoristasService {
       .eq('id', id)
       .single();
 
-    if (error || !data) {
+    if (error) throwSupabaseError(error, 'o motorista', 'buscar');
+    if (!data)
       throw new NotFoundException(`Motorista com ID ${id} não encontrado.`);
-    }
 
-    return data as Motorista;
+    return data;
   }
 
   async update(id: number, dto: UpdateMotoristaDto): Promise<Motorista> {
@@ -65,11 +63,11 @@ export class MotoristasService {
       .select()
       .single();
 
-    if (error || !data) {
-      throw new Error(`Erro: ${error?.message}`);
-    }
+    if (error) throwSupabaseError(error, 'o motorista', 'atualizar');
+    if (!data)
+      throw new NotFoundException(`Motorista com ID ${id} não encontrado.`);
 
-    return data as Motorista;
+    return data;
   }
 
   async remove(id: number): Promise<Motorista> {
@@ -81,11 +79,13 @@ export class MotoristasService {
       .select()
       .single();
 
-    if (error || !data) {
-      throw new NotFoundException(`Motorista com ID ${id} não encontrado para remoção.`);
+    if (error) throwSupabaseError(error, 'o motorista', 'remover');
+    if (!data) {
+      throw new NotFoundException(
+        `Motorista com ID ${id} não encontrado para remoção.`,
+      );
     }
 
-    return data as Motorista;
+    return data;
   }
-
 }
