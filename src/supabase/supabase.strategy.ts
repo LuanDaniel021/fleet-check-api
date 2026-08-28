@@ -27,10 +27,11 @@ export class SupabaseStrategy extends PassportStrategy(Strategy, 'supabase') {
     }
 
     super({
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      ignoreExpiration: false,
-      secretOrKey: jwtSecret,
-    });
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+  ignoreExpiration: false,
+  secretOrKey: jwtSecret,
+  algorithms: ['ES256', 'HS256'], // <-- Adicione os algoritmos aceitos
+});
   }
 
   validate(payload: Payload): User {
