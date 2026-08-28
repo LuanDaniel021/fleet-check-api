@@ -1,106 +1,86 @@
-import {
-  Injectable,
-  BadRequestException,
-  NotFoundException,
-  InternalServerErrorException,
-} from '@nestjs/common';
-import { CreateCaminhaoDto } from './dto/create-caminhao.dto';
-import { UpdateCaminhaoDto } from './dto/update-caminhao.dto';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { SupabaseService } from '../supabase/supabase.service';
 import { Caminhao } from './entities/caminhao.entity';
+import { CreateCaminhaoDto } from './dto/create-caminhao.dto';
+import { UpdateCaminhaoDto } from './dto/update-caminhao.dto';
 
 @Injectable()
 export class CaminhoesService {
   constructor(private readonly supabase: SupabaseService) {}
 
-  async teste(): Promise<string> {
-    const client = this.supabase.getClient();
-    const { data, error } = await client.rpc('query_now');
-
-    if (error) {
-      throw new BadRequestException(error.message);
-    }
-
-    return data;
-  }
-
   async create(dto: CreateCaminhaoDto): Promise<Caminhao> {
-    const client = this.supabase.getClient();
-    const { data, error } = await client
+    const { data, error } = await this.supabase
+      .getClient()
       .from('caminhao')
       .insert(dto)
-      .select()
+      .select('*, crlv(*), motorista(*)')
       .single();
 
-    if (error || !data) {
-      throw new BadRequestException(
-        `Falha ao cadastrar caminhão: ${error?.message}`,
-      );
-    }
+    if (error) throw error;
 
     return data;
   }
 
   async findAll(): Promise<Caminhao[]> {
-    const client = this.supabase.getClient();
-    const { data, error } = await client
+    const { data, error } = await this.supabase
+      .getClient()
       .from('caminhao')
       .select('*, crlv(*), motorista(*)');
 
-    if (error) {
-      throw new InternalServerErrorException(
-        `Erro ao buscar caminhões: ${error.message}`,
-      );
-    }
+    if (error) throw error;
 
-    return data;
+    return data || [];
   }
 
   async findOne(id: number): Promise<Caminhao> {
-    const client = this.supabase.getClient();
-    const { data, error } = await client
+    const { data, error } = await this.supabase
+      .getClient()
       .from('caminhao')
       .select('*, crlv(*), motorista(*)')
       .eq('id', id)
       .single();
 
-    if (error || !data) {
-      throw new NotFoundException(`Caminhão com ID ${id} não encontrado.`);
+    if (error) throw error;
+
+    if (!data) {
+      throw new NotFoundException(
+        `Caminhão com ID ${id} não pôde ser atualizado.`,
+      );
     }
 
     return data;
   }
 
   async update(id: number, dto: UpdateCaminhaoDto): Promise<Caminhao> {
-    const client = this.supabase.getClient();
-    const { data, error } = await client
+    const { data, error } = await this.supabase
+      .getClient()
       .from('caminhao')
       .update(dto)
       .eq('id', id)
-      .select('*')
+      .select('*, crlv(*), motorista(*)')
       .single();
 
-    if (error || !data) {
-      throw new Error(`Erro: ${error?.message}`);
+    if (error) throw error;
+
+    if (!data) {
+      throw new NotFoundException(
+        `Caminhão com ID ${id} não pôde ser atualizado.`,
+      );
     }
 
     return data;
   }
 
   async remove(id: number): Promise<Caminhao> {
-    const client = this.supabase.getClient();
-    const { data, error } = await client
+    const { data, error } = await this.supabase
+      .getClient()
       .from('caminhao')
       .delete()
       .eq('id', id)
       .select()
       .single();
 
-    if (error || !data) {
-      throw new NotFoundException(
-        `Caminhão com ID ${id} não encontrado para remoção.`,
-      );
-    }
+    if (error) throw error;
 
     return data;
   }

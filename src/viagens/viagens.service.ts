@@ -2,7 +2,6 @@ import {
   Injectable,
   BadRequestException,
   NotFoundException,
-  InternalServerErrorException,
 } from '@nestjs/common';
 import { CreateViagemDto } from './dto/create-viagem.dto';
 import { UpdateViagemDto } from './dto/update-viagen.dto';
@@ -18,40 +17,36 @@ export class ViagensService {
     const { data, error } = await client
       .from('viagem')
       .insert(dto)
-      .select()
+      .select('*, caminhao(*), motorista(*)')
       .single();
 
-    if (error || !data) {
-      throw new BadRequestException(
-        `Falha ao cadastrar viagem: ${error?.message}`,
-      );
-    }
+    if (error) throw error;
 
     return data;
   }
 
   async findAll(): Promise<Viagem[]> {
     const client = this.supabase.getClient();
-    const { data, error } = await client.from('viagem').select();
+    const { data, error } = await client
+      .from('viagem')
+      .select('*, caminhao(*), motorista(*)');
 
-    if (error) {
-      throw new InternalServerErrorException(
-        `Erro ao buscar viagens: ${error.message}`,
-      );
-    }
+    if (error) throw error;
 
-    return data;
+    return data || [];
   }
 
   async findOne(id: number): Promise<Viagem> {
     const client = this.supabase.getClient();
     const { data, error } = await client
       .from('viagem')
-      .select()
+      .select('*, caminhao(*), motorista(*)')
       .eq('id', id)
       .single();
 
-    if (error || !data) {
+    if (error) throw error;
+
+    if (!data) {
       throw new NotFoundException(`Viagem com ID ${id} não encontrada.`);
     }
 
@@ -64,11 +59,13 @@ export class ViagensService {
       .from('viagem')
       .update(dto)
       .eq('id', id)
-      .select()
+      .select('*, caminhao(*), motorista(*)')
       .single();
 
-    if (error || !data) {
-      throw new Error(`Error: ${error?.message}.`);
+    if (error) throw error;
+
+    if (!data) {
+      throw new BadRequestException(`Falha ao atualizar viagem com ID ${id}.`);
     }
 
     return data;
@@ -80,14 +77,10 @@ export class ViagensService {
       .from('viagem')
       .delete()
       .eq('id', id)
-      .select()
+      .select('*, caminhao(*), motorista(*)')
       .single();
 
-    if (error || !data) {
-      throw new NotFoundException(
-        `Viagem com ID ${id} não encontrada para remoção.`,
-      );
-    }
+    if (error) throw error;
 
     return data;
   }
