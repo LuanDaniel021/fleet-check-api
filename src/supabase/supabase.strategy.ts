@@ -2,6 +2,18 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
+interface Payload {
+  sub: string;
+  email: string;
+  role: string;
+}
+
+interface User {
+  userId: string;
+  email: string;
+  role: string;
+}
+
 @Injectable()
 export class SupabaseStrategy extends PassportStrategy(Strategy, 'supabase') {
   constructor() {
@@ -20,7 +32,7 @@ export class SupabaseStrategy extends PassportStrategy(Strategy, 'supabase') {
     });
   }
 
-  async validate(payload: any) {
+  validate(payload: Payload): User {
     if (!payload) {
       throw new UnauthorizedException('Token inválido');
     }
