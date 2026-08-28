@@ -11,10 +11,12 @@ import { MedicaoPneusModule } from './medicao_pneus/medicao_pneus.module';
 import { IpvasModule } from './ipvas/ipvas.module';
 import { MotoristasModule } from './motoristas/motoristas.module';
 import { ManutencaoModule } from './manutencoes/manutencao.module';
+import { AuthModule } from './auth.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
+    AuthModule,
     CaminhoesModule,
     SupabaseModule,
     CrlvsModule,
