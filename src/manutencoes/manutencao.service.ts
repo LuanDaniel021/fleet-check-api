@@ -1,6 +1,5 @@
 import {
   Injectable,
-  BadRequestException,
   NotFoundException,
   InternalServerErrorException,
 } from '@nestjs/common';
@@ -8,6 +7,7 @@ import { CreateManutencaoDto } from './dto/create-manutencao.dto';
 import { UpdateManutencaoDto } from './dto/update-manutencao.dto';
 import { SupabaseService } from '../supabase/supabase.service';
 import { Manutencao } from './entities/manutencao.entity';
+import { throwSupabaseError } from '../supabase/supabase-error.util';
 
 @Injectable()
 export class ManutencaoService {
@@ -21,11 +21,11 @@ export class ManutencaoService {
       .select()
       .single();
 
-    if (error || !data) {
-      throw new BadRequestException(
-        `Falha ao cadastrar manutenção: ${error?.message}`,
+    if (error) throwSupabaseError(error, 'a manutenção', 'cadastrar');
+    if (!data)
+      throw new InternalServerErrorException(
+        'A manutenção não foi retornada após o cadastro.',
       );
-    }
 
     return data;
   }
@@ -34,13 +34,9 @@ export class ManutencaoService {
     const client = this.supabase.getClient();
     const { data, error } = await client.from('manutencao').select();
 
-    if (error) {
-      throw new InternalServerErrorException(
-        `Erro ao buscar manutenções: ${error.message}`,
-      );
-    }
+    if (error) throwSupabaseError(error, 'as manutenções', 'buscar');
 
-    return data;
+    return data ?? [];
   }
 
   async findOne(id: number): Promise<Manutencao> {
@@ -51,9 +47,9 @@ export class ManutencaoService {
       .eq('id', id)
       .single();
 
-    if (error || !data) {
+    if (error) throwSupabaseError(error, 'a manutenção', 'buscar');
+    if (!data)
       throw new NotFoundException(`Manutenção com ID ${id} não encontrada.`);
-    }
 
     return data;
   }
@@ -67,9 +63,9 @@ export class ManutencaoService {
       .select()
       .single();
 
-    if (error || !data) {
-      throw new Error(`Erro: ${error?.message}`);
-    }
+    if (error) throwSupabaseError(error, 'a manutenção', 'atualizar');
+    if (!data)
+      throw new NotFoundException(`Manutenção com ID ${id} não encontrada.`);
 
     return data;
   }
@@ -83,7 +79,8 @@ export class ManutencaoService {
       .select()
       .single();
 
-    if (error || !data) {
+    if (error) throwSupabaseError(error, 'a manutenção', 'remover');
+    if (!data) {
       throw new NotFoundException(
         `Manutenção com ID ${id} não encontrada para remoção.`,
       );

@@ -1,8 +1,13 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { SupabaseService } from '../supabase/supabase.service';
 import { Caminhao } from './entities/caminhao.entity';
 import { CreateCaminhaoDto } from './dto/create-caminhao.dto';
 import { UpdateCaminhaoDto } from './dto/update-caminhao.dto';
+import { throwSupabaseError } from '../supabase/supabase-error.util';
 
 @Injectable()
 export class CaminhoesService {
@@ -16,7 +21,11 @@ export class CaminhoesService {
       .select('*, crlv(*), motorista(*)')
       .single();
 
-    if (error) throw error;
+    if (error) throwSupabaseError(error, 'o caminhão', 'cadastrar');
+    if (!data)
+      throw new InternalServerErrorException(
+        'O caminhão não foi retornado após o cadastro.',
+      );
 
     return data;
   }
@@ -27,7 +36,7 @@ export class CaminhoesService {
       .from('caminhao')
       .select('*, crlv(*), motorista(*)');
 
-    if (error) throw error;
+    if (error) throwSupabaseError(error, 'os caminhões', 'buscar');
 
     return data || [];
   }
@@ -40,7 +49,7 @@ export class CaminhoesService {
       .eq('id', id)
       .single();
 
-    if (error) throw error;
+    if (error) throwSupabaseError(error, 'o caminhão', 'buscar');
 
     if (!data) {
       throw new NotFoundException(
@@ -60,7 +69,7 @@ export class CaminhoesService {
       .select('*, crlv(*), motorista(*)')
       .single();
 
-    if (error) throw error;
+    if (error) throwSupabaseError(error, 'o caminhão', 'atualizar');
 
     if (!data) {
       throw new NotFoundException(
@@ -80,7 +89,13 @@ export class CaminhoesService {
       .select()
       .single();
 
-    if (error) throw error;
+    if (error) throwSupabaseError(error, 'o caminhão', 'remover');
+
+    if (!data) {
+      throw new NotFoundException(
+        `Caminhão com ID ${id} não encontrado para remoção.`,
+      );
+    }
 
     return data;
   }

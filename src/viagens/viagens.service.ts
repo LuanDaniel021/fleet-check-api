@@ -1,12 +1,13 @@
 import {
   Injectable,
-  BadRequestException,
+  InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
 import { CreateViagemDto } from './dto/create-viagem.dto';
 import { UpdateViagemDto } from './dto/update-viagem.dto';
 import { SupabaseService } from '../supabase/supabase.service';
 import { Viagem } from './entities/viagem.entity';
+import { throwSupabaseError } from '../supabase/supabase-error.util';
 
 @Injectable()
 export class ViagensService {
@@ -20,7 +21,11 @@ export class ViagensService {
       .select('*, caminhao(*), motorista(*)')
       .single();
 
-    if (error) throw error;
+    if (error) throwSupabaseError(error, 'a viagem', 'cadastrar');
+    if (!data)
+      throw new InternalServerErrorException(
+        'A viagem não foi retornada após o cadastro.',
+      );
 
     return data;
   }
@@ -31,7 +36,7 @@ export class ViagensService {
       .from('viagem')
       .select('*, caminhao(*), motorista(*)');
 
-    if (error) throw error;
+    if (error) throwSupabaseError(error, 'as viagens', 'buscar');
 
     return data || [];
   }
@@ -44,7 +49,7 @@ export class ViagensService {
       .eq('id', id)
       .single();
 
-    if (error) throw error;
+    if (error) throwSupabaseError(error, 'a viagem', 'buscar');
 
     if (!data) {
       throw new NotFoundException(`Viagem com ID ${id} não encontrada.`);
@@ -62,10 +67,10 @@ export class ViagensService {
       .select('*, caminhao(*), motorista(*)')
       .single();
 
-    if (error) throw error;
+    if (error) throwSupabaseError(error, 'a viagem', 'atualizar');
 
     if (!data) {
-      throw new BadRequestException(`Falha ao atualizar viagem com ID ${id}.`);
+      throw new NotFoundException(`Viagem com ID ${id} não encontrada.`);
     }
 
     return data;
@@ -80,7 +85,13 @@ export class ViagensService {
       .select('*, caminhao(*), motorista(*)')
       .single();
 
-    if (error) throw error;
+    if (error) throwSupabaseError(error, 'a viagem', 'remover');
+
+    if (!data) {
+      throw new NotFoundException(
+        `Viagem com ID ${id} não encontrada para remoção.`,
+      );
+    }
 
     return data;
   }
