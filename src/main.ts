@@ -19,7 +19,7 @@ async function bootstrap(): Promise<void> {
     .setVersion('1.0')
     .addBearerAuth(
       {
-        type: 'https',
+        type: 'http',
         scheme: 'bearer',
         bearerFormat: 'JWT',
         name: 'JWT',
