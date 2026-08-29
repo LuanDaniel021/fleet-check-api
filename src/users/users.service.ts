@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { SupabaseService } from '../../supabase/supabase.service'
+import { SupabaseService } from '../supabase/supabase.service'
 import { LoginUserDto } from './dto/login-users.dto';
 import { User } from './entities/user.entity';
 
@@ -7,7 +7,7 @@ import { User } from './entities/user.entity';
 export class UsersService {
     constructor(private readonly supabase: SupabaseService)
     
-    async login( dto : LoginUserDto ): Promise<User>
+    async login( dto : LoginUserDto ): Promise<string>
     {
         const client = this.supabase.getClient();
         const { data, error } = await client.auth.signInWithPassword({
