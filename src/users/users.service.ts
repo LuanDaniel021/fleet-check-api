@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { SupabaseService } from '../supabase/supabase.service'
 import { LoginUserDto } from './dto/login-users.dto';
-import { User } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
