@@ -12,6 +12,7 @@ import { IpvasModule } from './ipvas/ipvas.module';
 import { MotoristasModule } from './motoristas/motoristas.module';
 import { ManutencaoModule } from './manutencoes/manutencao.module';
 import { AuthModule } from './auth.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { AuthModule } from './auth.module';
     IpvasModule,
     MotoristasModule,
     ManutencaoModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
