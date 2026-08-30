@@ -1,6 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
+import { passportJwtSecret } from 'jwks-rsa';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
 interface Payload {
@@ -18,19 +19,24 @@ interface User {
 @Injectable()
 export class SupabaseStrategy extends PassportStrategy(Strategy, 'supabase') {
   constructor(private configService: ConfigService) {
-    const jwtSecret = configService.get<string>('SUPABASE_JWT_SECRET');
+    const supabaseUrl = configService.get<string>('SUPABASE_URL');
 
-    if (!jwtSecret) {
-      throw new Error(
-        'A variável de ambiente SUPABASE_JWT_SECRET não está definida.',
-      );
+    if (!supabaseUrl) {
+      throw new Error('A variável de ambiente SUPABASE_URL não está definida.');
     }
 
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: jwtSecret,
-      algorithms: ['HS256'],
+      secretOrKeyProvider: passportJwtSecret({
+        cache: true,
+        rateLimit: true,
+        jwksRequestsPerMinute: 5,
+        jwksUri: `${supabaseUrl}/auth/v1/.well-known/jwks.json`,
+      }),
+      audience: 'authenticated',
+      issuer: `${supabaseUrl}/auth/v1`,
+      algorithms: ['RS256'],
     });
   }
 
@@ -38,6 +44,7 @@ export class SupabaseStrategy extends PassportStrategy(Strategy, 'supabase') {
     if (!payload) {
       throw new UnauthorizedException('Token inválido');
     }
+
     return {
       userId: payload.sub,
       email: payload.email,
