@@ -1,7 +1,8 @@
 import { Controller, Post, UseGuards, Body } from '@nestjs/common';
+import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/create-users.dto';
-import { UpdateUserDto } from './dto/update-users.dto';
+import { LoginUserDto } from './dto/login-users.dto';
+import { SupabaseAuthGuard } from '../supabase/supabase.jwt-auth.guard';
 
 @ApiBearerAuth('access-token')
 @Controller('users')
