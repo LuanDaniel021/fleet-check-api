@@ -1,9 +1,9 @@
-import { PartialType } from '@nestjs/swagger';
+import { IsEmail, IsString } from 'class-validator';
 
 export class LoginUserDto {
+  @IsEmail()
+  email: string;
 
-    email:string;
-
-    password:string;
-    
+  @IsString()
+  password: string;
 }
