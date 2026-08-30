@@ -34,21 +34,19 @@ export class SupabaseStrategy extends PassportStrategy(Strategy, 'supabase') {
         jwksRequestsPerMinute: 5,
         jwksUri: `${supabaseUrl}/auth/v1/.well-known/jwks.json`,
       }),
-      audience: 'authenticated',
-      issuer: `${supabaseUrl}/auth/v1`,
       algorithms: ['RS256'],
     });
   }
 
   validate(payload: Payload): User {
-    if (!payload) {
+    if (!payload || !payload.sub) {
       throw new UnauthorizedException('Token inválido');
     }
 
     return {
       userId: payload.sub,
-      email: payload.email,
-      role: payload.role,
+      email: payload.email ?? '',
+      role: payload.role ?? 'authenticated',
     };
   }
 }
