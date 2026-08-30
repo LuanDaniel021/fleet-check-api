@@ -11,7 +11,6 @@ export class UsersController {
 
   @Post('login')
   @ApiOperation({ summary: 'Realiza autenticação do usuário' })
-  @UseGuards(SupabaseAuthGuard)
   login(@Body() dto: LoginUserDto): Promise<string> {
     return this.usersService.login(dto);
   }
