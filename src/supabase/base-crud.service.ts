@@ -63,7 +63,7 @@ export abstract class BaseCrudService<
     if (error) throwSupabaseError(error, this.singularResource, 'buscar');
     if (!data) {
       throw new NotFoundException(
-        `${this.formatResource(this.singularResource)} com ID ${id} não encontrado.`,
+        `${this.formatResource(this.singularResource)} com ID ${id} não foi encontrado.`,
       );
     }
 
@@ -82,7 +82,7 @@ export abstract class BaseCrudService<
     if (error) throwSupabaseError(error, this.singularResource, 'atualizar');
     if (!data) {
       throw new NotFoundException(
-        `${this.formatResource(this.singularResource)} com ID ${id} não encontrado.`,
+        `${this.formatResource(this.singularResource)} com ID ${id} não foi encontrado.`,
       );
     }
 
@@ -101,7 +101,7 @@ export abstract class BaseCrudService<
     if (error) throwSupabaseError(error, this.singularResource, 'remover');
     if (!data) {
       throw new NotFoundException(
-        `${this.formatResource(this.singularResource)} com ID ${id} não encontrado para remoção.`,
+        `${this.formatResource(this.singularResource)} com ID ${id} não foi encontrado para remoção.`,
       );
     }
 
