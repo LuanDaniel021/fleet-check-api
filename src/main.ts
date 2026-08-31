@@ -17,7 +17,17 @@ async function bootstrap(): Promise<void> {
     .setTitle('Fleet Check API')
     .setDescription('Documentação da API')
     .setVersion('1.0')
-    .addBearerAuth()
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        name: 'JWT',
+        description: 'Insira o JWT de acesso do Supabase',
+        in: 'header',
+      },
+      'access-token',
+    )
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
