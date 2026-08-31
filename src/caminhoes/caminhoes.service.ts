@@ -1,102 +1,26 @@
-import {
-  Injectable,
-  InternalServerErrorException,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { SupabaseService } from '../supabase/supabase.service';
+import { BaseCrudService } from '../supabase/base-crud.service';
 import { Caminhao } from './entities/caminhao.entity';
 import { CreateCaminhaoDto } from './dto/create-caminhao.dto';
 import { UpdateCaminhaoDto } from './dto/update-caminhao.dto';
-import { throwSupabaseError } from '../supabase/supabase-error.util';
 
 @Injectable()
-export class CaminhoesService {
-  constructor(private readonly supabase: SupabaseService) {}
+export class CaminhoesService extends BaseCrudService<Caminhao> {
+  protected table = 'caminhao';
+  protected singularResource = 'o caminhão';
+  protected pluralResource = 'os caminhões';
+  protected selectQuery = '*, crlv(*), motorista(*)';
 
-  async create(dto: CreateCaminhaoDto): Promise<Caminhao> {
-    const { data, error } = await this.supabase
-      .getClient()
-      .from('caminhao')
-      .insert(dto)
-      .select('*, crlv(*), motorista(*)')
-      .single();
-
-    if (error) throwSupabaseError(error, 'o caminhão', 'cadastrar');
-    if (!data)
-      throw new InternalServerErrorException(
-        'O caminhão não foi retornado após o cadastro.',
-      );
-
-    return data;
+  constructor(protected readonly supabase: SupabaseService) {
+    super(supabase);
   }
 
-  async findAll(): Promise<Caminhao[]> {
-    const { data, error } = await this.supabase
-      .getClient()
-      .from('caminhao')
-      .select('*, crlv(*), motorista(*)');
-
-    if (error) throwSupabaseError(error, 'os caminhões', 'buscar');
-
-    return data || [];
+  override create(dto: CreateCaminhaoDto): Promise<Caminhao> {
+    return super.create(dto);
   }
 
-  async findOne(id: number): Promise<Caminhao> {
-    const { data, error } = await this.supabase
-      .getClient()
-      .from('caminhao')
-      .select('*, crlv(*), motorista(*)')
-      .eq('id', id)
-      .single();
-
-    if (error) throwSupabaseError(error, 'o caminhão', 'buscar');
-
-    if (!data) {
-      throw new NotFoundException(
-        `Caminhão com ID ${id} não pôde ser atualizado.`,
-      );
-    }
-
-    return data;
-  }
-
-  async update(id: number, dto: UpdateCaminhaoDto): Promise<Caminhao> {
-    const { data, error } = await this.supabase
-      .getClient()
-      .from('caminhao')
-      .update(dto)
-      .eq('id', id)
-      .select('*, crlv(*), motorista(*)')
-      .single();
-
-    if (error) throwSupabaseError(error, 'o caminhão', 'atualizar');
-
-    if (!data) {
-      throw new NotFoundException(
-        `Caminhão com ID ${id} não pôde ser atualizado.`,
-      );
-    }
-
-    return data;
-  }
-
-  async remove(id: number): Promise<Caminhao> {
-    const { data, error } = await this.supabase
-      .getClient()
-      .from('caminhao')
-      .delete()
-      .eq('id', id)
-      .select()
-      .single();
-
-    if (error) throwSupabaseError(error, 'o caminhão', 'remover');
-
-    if (!data) {
-      throw new NotFoundException(
-        `Caminhão com ID ${id} não encontrado para remoção.`,
-      );
-    }
-
-    return data;
+  override update(id: number, dto: UpdateCaminhaoDto): Promise<Caminhao> {
+    return super.update(id, dto);
   }
 }

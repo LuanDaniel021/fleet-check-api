@@ -1,98 +1,26 @@
-import {
-  Injectable,
-  InternalServerErrorException,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateViagemDto } from './dto/create-viagem.dto';
 import { UpdateViagemDto } from './dto/update-viagem.dto';
 import { SupabaseService } from '../supabase/supabase.service';
 import { Viagem } from './entities/viagem.entity';
-import { throwSupabaseError } from '../supabase/supabase-error.util';
+import { BaseCrudService } from '../supabase/base-crud.service';
 
 @Injectable()
-export class ViagensService {
-  constructor(private readonly supabase: SupabaseService) {}
+export class ViagensService extends BaseCrudService<Viagem> {
+  protected table = 'viagem';
+  protected singularResource = 'a viagem';
+  protected pluralResource = 'as viagens';
+  protected selectQuery = '*, caminhao(*), motorista(*)';
 
-  async create(dto: CreateViagemDto): Promise<Viagem> {
-    const client = this.supabase.getClient();
-    const { data, error } = await client
-      .from('viagem')
-      .insert(dto)
-      .select('*, caminhao(*), motorista(*)')
-      .single();
-
-    if (error) throwSupabaseError(error, 'a viagem', 'cadastrar');
-    if (!data)
-      throw new InternalServerErrorException(
-        'A viagem não foi retornada após o cadastro.',
-      );
-
-    return data;
+  constructor(protected readonly supabase: SupabaseService) {
+    super(supabase);
   }
 
-  async findAll(): Promise<Viagem[]> {
-    const client = this.supabase.getClient();
-    const { data, error } = await client
-      .from('viagem')
-      .select('*, caminhao(*), motorista(*)');
-
-    if (error) throwSupabaseError(error, 'as viagens', 'buscar');
-
-    return data || [];
+  override create(dto: CreateViagemDto): Promise<Viagem> {
+    return super.create(dto);
   }
 
-  async findOne(id: number): Promise<Viagem> {
-    const client = this.supabase.getClient();
-    const { data, error } = await client
-      .from('viagem')
-      .select('*, caminhao(*), motorista(*)')
-      .eq('id', id)
-      .single();
-
-    if (error) throwSupabaseError(error, 'a viagem', 'buscar');
-
-    if (!data) {
-      throw new NotFoundException(`Viagem com ID ${id} não encontrada.`);
-    }
-
-    return data;
-  }
-
-  async update(id: number, dto: UpdateViagemDto): Promise<Viagem> {
-    const client = this.supabase.getClient();
-    const { data, error } = await client
-      .from('viagem')
-      .update(dto)
-      .eq('id', id)
-      .select('*, caminhao(*), motorista(*)')
-      .single();
-
-    if (error) throwSupabaseError(error, 'a viagem', 'atualizar');
-
-    if (!data) {
-      throw new NotFoundException(`Viagem com ID ${id} não encontrada.`);
-    }
-
-    return data;
-  }
-
-  async remove(id: number): Promise<Viagem> {
-    const client = this.supabase.getClient();
-    const { data, error } = await client
-      .from('viagem')
-      .delete()
-      .eq('id', id)
-      .select('*, caminhao(*), motorista(*)')
-      .single();
-
-    if (error) throwSupabaseError(error, 'a viagem', 'remover');
-
-    if (!data) {
-      throw new NotFoundException(
-        `Viagem com ID ${id} não encontrada para remoção.`,
-      );
-    }
-
-    return data;
+  override update(id: number, dto: UpdateViagemDto): Promise<Viagem> {
+    return super.update(id, dto);
   }
 }
