@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
-import { SupabaseAuthGuard } from './supabase/supabase.jwt-auth.guard';
+import { SupabaseAuthGuard } from './supabase/supabase.auth.guard';
 import { SupabaseStrategy } from './supabase/supabase.strategy';
 
 @Module({
