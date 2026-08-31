@@ -33,13 +33,26 @@ export class UsersController {
     return this.usersService.registry(dto);
   }
 
+  @Post('fregistry')
+  @ApiOperation({ summary: 'Cadastrar um novo usuário' })
+  fregistry(@Body() dto: CreateUserDto): Promise<RegistryResponse> {
+    return this.usersService.fregistry(dto);
+  }
+
   @UseGuards(SupabaseAuthGuard)
-  @Patch(':id')
+  @Patch('update/:id')
   @ApiOperation({ summary: 'Atualiza dados de um usuário pelo ID' })
-  atualizarPorId(
+  update(
     @Param('id') id: string,
     @Body() dto: UpdateUserDto,
   ): Promise<UpdateResponse> {
     return this.usersService.update(id, dto);
+  }
+
+  @Patch('delete/:id')
+  @UseGuards(SupabaseAuthGuard)
+  @ApiOperation({ summary: 'Atualiza dados de um usuário pelo ID' })
+  delete(@Param('id') id: string) {
+    return this.usersService.delete(id);
   }
 }
