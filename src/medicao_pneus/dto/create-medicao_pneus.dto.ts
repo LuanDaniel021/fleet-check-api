@@ -7,7 +7,7 @@ export class CreateMedicaoPneuDto implements TablesInsert<'medicao_pneu'> {
     description: 'ID do pneu medido',
     example: 1,
   })
-  @IsInt()
+  @IsInt({ message: 'O campo pneu_id deve ser um número inteiro.' })
   @IsOptional()
   pneu_id?: number | null;
 
@@ -15,7 +15,7 @@ export class CreateMedicaoPneuDto implements TablesInsert<'medicao_pneu'> {
     description: 'ID da viagem em que a medição foi realizada',
     example: 1,
   })
-  @IsInt()
+  @IsInt({ message: 'O campo viagem_id deve ser um número inteiro.' })
   @IsOptional()
   viagem_id?: number | null;
 
@@ -23,7 +23,7 @@ export class CreateMedicaoPneuDto implements TablesInsert<'medicao_pneu'> {
     description: 'Profundidade atual do sulco do pneu (em mm)',
     example: 12.3,
   })
-  @IsNumber()
+  @IsNumber({}, { message: 'A profundidade do pneu deve ser um número.' })
   @IsOptional()
   profundidade_atual_mm?: number | null;
 
@@ -31,7 +31,7 @@ export class CreateMedicaoPneuDto implements TablesInsert<'medicao_pneu'> {
     description: 'Data em que a medição foi realizada (formato YYYY-MM-DD)',
     example: '2026-08-27',
   })
-  @IsDateString()
+  @IsDateString({}, { message: 'A data da medição deve estar no formato YYYY-MM-DD.' })
   @IsOptional()
   data_medicao?: string | null;
 }

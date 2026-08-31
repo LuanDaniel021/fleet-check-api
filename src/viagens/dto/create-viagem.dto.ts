@@ -7,7 +7,7 @@ export class CreateViagemDto implements TablesInsert<'viagem'> {
     description: 'ID do caminhão vinculado à viagem',
     example: 1,
   })
-  @IsInt()
+  @IsInt({ message: 'O campo caminhao_id deve ser um número inteiro.' })
   @IsOptional()
   caminhao_id?: number | null;
 
@@ -15,7 +15,7 @@ export class CreateViagemDto implements TablesInsert<'viagem'> {
     description: 'ID do motorista responsável pela viagem',
     example: 12,
   })
-  @IsInt()
+  @IsInt({ message: 'O campo motorista_id deve ser um número inteiro.' })
   @IsOptional()
   motorista_id?: number | null;
 
@@ -23,7 +23,7 @@ export class CreateViagemDto implements TablesInsert<'viagem'> {
     description: 'Data e hora de início da viagem (formato ISO 8601)',
     example: '2026-08-27T10:00:00Z',
   })
-  @IsDateString()
+  @IsDateString({}, { message: 'A data de início da viagem deve estar em formato ISO 8601.' })
   @IsOptional()
   data_inicio?: string | null;
 
@@ -31,7 +31,7 @@ export class CreateViagemDto implements TablesInsert<'viagem'> {
     description: 'Data e hora de término da viagem (formato ISO 8601)',
     example: '2026-08-28T18:00:00Z',
   })
-  @IsDateString()
+  @IsDateString({}, { message: 'A data de fim da viagem deve estar em formato ISO 8601.' })
   @IsOptional()
   data_fim?: string | null;
 
@@ -39,7 +39,7 @@ export class CreateViagemDto implements TablesInsert<'viagem'> {
     description: 'Quilometragem inicial do veículo',
     example: 120000.0,
   })
-  @IsNumber()
+  @IsNumber({}, { message: 'A quilometragem inicial deve ser um número.' })
   @IsOptional()
   km_inicial?: number | null;
 
@@ -47,7 +47,7 @@ export class CreateViagemDto implements TablesInsert<'viagem'> {
     description: 'Quilometragem final do veículo',
     example: 120450.5,
   })
-  @IsNumber()
+  @IsNumber({}, { message: 'A quilometragem final deve ser um número.' })
   @IsOptional()
   km_final?: number | null;
 
@@ -55,7 +55,7 @@ export class CreateViagemDto implements TablesInsert<'viagem'> {
     description: 'Distância total percorrida na viagem (em km)',
     example: 450.5,
   })
-  @IsNumber()
+  @IsNumber({}, { message: 'A distância percorrida deve ser um número.' })
   @IsOptional()
   distancia_percorrida?: number | null;
 }

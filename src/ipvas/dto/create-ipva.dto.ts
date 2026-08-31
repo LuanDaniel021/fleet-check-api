@@ -13,7 +13,7 @@ export class CreateIpvaDto implements TablesInsert<'ipva'> {
     description: 'ID do CRLV vinculado a este IPVA',
     example: 3,
   })
-  @IsInt()
+  @IsInt({ message: 'O campo crlv_id deve ser um número inteiro.' })
   @IsOptional()
   crlv_id?: number | null;
 
@@ -21,7 +21,7 @@ export class CreateIpvaDto implements TablesInsert<'ipva'> {
     description: 'Ano de referência do imposto',
     example: 2026,
   })
-  @IsInt()
+  @IsInt({ message: 'O campo ano_referencia deve ser um número inteiro.' })
   @IsOptional()
   ano_referencia?: number | null;
 
@@ -29,7 +29,7 @@ export class CreateIpvaDto implements TablesInsert<'ipva'> {
     description: 'Data de vencimento do IPVA (formato YYYY-MM-DD)',
     example: '2026-03-15',
   })
-  @IsDateString()
+  @IsDateString({}, { message: 'A data de vencimento deve estar no formato YYYY-MM-DD.' })
   @IsOptional()
   data_vencimento?: string | null;
 
@@ -37,7 +37,7 @@ export class CreateIpvaDto implements TablesInsert<'ipva'> {
     description: 'Valor total do IPVA (em R$)',
     example: 2450.0,
   })
-  @IsNumber()
+  @IsNumber({}, { message: 'O valor do IPVA deve ser um número.' })
   @IsOptional()
   valor?: number | null;
 
@@ -45,7 +45,7 @@ export class CreateIpvaDto implements TablesInsert<'ipva'> {
     description: 'Status do pagamento (ex: Pago, Pendente, Atrasado)',
     example: 'Pago',
   })
-  @IsString()
+  @IsString({ message: 'O status deve ser um texto.' })
   @IsOptional()
   status?: string | null;
 }
