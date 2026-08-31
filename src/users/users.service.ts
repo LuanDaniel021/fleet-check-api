@@ -3,6 +3,8 @@ import { SupabaseService } from '../supabase/supabase.service';
 import { LoginUserDto } from './dto/login-users.dto';
 import { CreateUserDto } from './dto/create-users.dto';
 import { RegistryResponse } from './interfaces/registry-response.interface';
+import { UpdateUserDto } from './dto/update-users.dto';
+import { UpdateResponse } from './interfaces/update-response.interface';
 
 @Injectable()
 export class UsersService {
@@ -44,6 +46,26 @@ export class UsersService {
         id: data.user?.id,
         email: data.user?.email,
       },
+    };
+  }
+
+  async update(userId: string, dto: UpdateUserDto): Promise<UpdateResponse> {
+    const client = this.supabase.getClient();
+    const { data, error } = await client.auth.admin.updateUserById(userId, {
+      email: dto.email,
+      password: dto.password,
+      user_metadata: { nome: dto.nome },
+    });
+
+    if (error) {
+      throw new BadRequestException(
+        `Erro ao atualizar dados: ${error.message}`,
+      );
+    }
+
+    return {
+      message: 'Perfil atualizado com sucesso!',
+      user: data.user,
     };
   }
 }
