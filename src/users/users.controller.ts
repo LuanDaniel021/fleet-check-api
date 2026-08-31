@@ -33,12 +33,6 @@ export class UsersController {
     return this.usersService.registry(dto);
   }
 
-  @Post('fregistry')
-  @ApiOperation({ summary: 'Cadastrar um novo usuário' })
-  fregistry(@Body() dto: CreateUserDto): Promise<RegistryResponse> {
-    return this.usersService.fregistry(dto);
-  }
-
   @UseGuards(SupabaseAuthGuard)
   @Patch('update/:id')
   @ApiOperation({ summary: 'Atualiza dados de um usuário pelo ID' })

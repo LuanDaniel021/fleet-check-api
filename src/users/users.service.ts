@@ -48,31 +48,6 @@ export class UsersService {
     };
   }
 
-  async fregistry(dto: CreateUserDto): Promise<RegistryResponse> {
-    const client = this.supabase.getClient();
-    const { data, error } = await client.auth.admin.createUser({
-      email: dto.email,
-      password: dto.password,
-      user_metadata: {
-        nome: dto.nome,
-      },
-      email_confirm: true,
-    });
-
-    if (error) {
-      throw new BadRequestException(`Erro ao criar usuário: ${error.message}`);
-    }
-
-    return {
-      mensagem: 'Usuário cadastrado com sucesso!',
-      user: {
-        id: data.user?.id,
-        email: data.user?.email,
-        access_token: '',
-      },
-    };
-  }
-
   async update(userId: string, dto: UpdateUserDto): Promise<UpdateResponse> {
     const client = this.supabase.getClient();
     const { data, error } = await client.auth.admin.updateUserById(userId, {
