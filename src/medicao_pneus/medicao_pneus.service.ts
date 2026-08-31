@@ -6,20 +6,16 @@ import { MedicaoPneu } from './entities/medicao_pneu.entity';
 import { BaseCrudService } from '../supabase/base-crud.service';
 
 @Injectable()
-export class MedicaoPneusService extends BaseCrudService<MedicaoPneu> {
+export class MedicaoPneusService extends BaseCrudService<
+  MedicaoPneu,
+  CreateMedicaoPneuDto,
+  UpdateMedicaoPneuDto
+> {
   protected table = 'medicao_pneu';
   protected singularResource = 'a medição de pneu';
   protected pluralResource = 'as medições de pneus';
 
-  constructor(protected readonly supabase: SupabaseService) {
+  constructor(supabase: SupabaseService) {
     super(supabase);
-  }
-
-  override create(dto: CreateMedicaoPneuDto): Promise<MedicaoPneu> {
-    return super.create(dto);
-  }
-
-  override update(id: number, dto: UpdateMedicaoPneuDto): Promise<MedicaoPneu> {
-    return super.update(id, dto);
   }
 }

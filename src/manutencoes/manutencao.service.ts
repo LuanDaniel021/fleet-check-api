@@ -6,20 +6,16 @@ import { Manutencao } from './entities/manutencao.entity';
 import { BaseCrudService } from '../supabase/base-crud.service';
 
 @Injectable()
-export class ManutencaoService extends BaseCrudService<Manutencao> {
+export class ManutencaoService extends BaseCrudService<
+  Manutencao,
+  CreateManutencaoDto,
+  UpdateManutencaoDto
+> {
   protected table = 'manutencao';
   protected singularResource = 'a manutenção';
   protected pluralResource = 'as manutenções';
 
-  constructor(protected readonly supabase: SupabaseService) {
+  constructor(supabase: SupabaseService) {
     super(supabase);
-  }
-
-  override create(dto: CreateManutencaoDto): Promise<Manutencao> {
-    return super.create(dto);
-  }
-
-  override update(id: number, dto: UpdateManutencaoDto): Promise<Manutencao> {
-    return super.update(id, dto);
   }
 }

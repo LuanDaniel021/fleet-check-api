@@ -6,20 +6,12 @@ import { Pneu } from './entities/pneu.entity';
 import { BaseCrudService } from '../supabase/base-crud.service';
 
 @Injectable()
-export class PneusService extends BaseCrudService<Pneu> {
+export class PneusService extends BaseCrudService<Pneu, CreatePneuDto, UpdatePneuDto> {
   protected table = 'pneu';
   protected singularResource = 'o pneu';
   protected pluralResource = 'os pneus';
 
-  constructor(protected readonly supabase: SupabaseService) {
+  constructor(supabase: SupabaseService) {
     super(supabase);
-  }
-
-  override create(dto: CreatePneuDto): Promise<Pneu> {
-    return super.create(dto);
-  }
-
-  override update(id: number, dto: UpdatePneuDto): Promise<Pneu> {
-    return super.update(id, dto);
   }
 }

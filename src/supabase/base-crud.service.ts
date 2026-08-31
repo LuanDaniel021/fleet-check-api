@@ -7,7 +7,11 @@ import { SupabaseService } from './supabase.service';
 import { throwSupabaseError } from './supabase-error.util';
 
 @Injectable()
-export abstract class BaseCrudService<T> {
+export abstract class BaseCrudService<
+  TEntity,
+  TCreateDto = Partial<TEntity>,
+  TUpdateDto = Partial<TEntity>,
+> {
   protected abstract table: string;
   protected abstract singularResource: string;
   protected abstract pluralResource: string;
@@ -15,7 +19,11 @@ export abstract class BaseCrudService<T> {
 
   constructor(protected readonly supabase: SupabaseService) {}
 
-  async create(dto: Partial<T>): Promise<T> {
+  protected formatResource(resource: string): string {
+    return resource.charAt(0).toUpperCase() + resource.slice(1);
+  }
+
+  async create(dto: TCreateDto): Promise<TEntity> {
     const { data, error } = await this.supabase
       .getClient()
       .from(this.table)
@@ -26,14 +34,14 @@ export abstract class BaseCrudService<T> {
     if (error) throwSupabaseError(error, this.singularResource, 'cadastrar');
     if (!data) {
       throw new InternalServerErrorException(
-        `O registro não foi retornado após o cadastro.`,
+        'O registro não foi retornado após o cadastro.',
       );
     }
 
-    return data as T;
+    return data as TEntity;
   }
 
-  async findAll(): Promise<T[]> {
+  async findAll(): Promise<TEntity[]> {
     const { data, error } = await this.supabase
       .getClient()
       .from(this.table)
@@ -41,10 +49,10 @@ export abstract class BaseCrudService<T> {
 
     if (error) throwSupabaseError(error, this.pluralResource, 'buscar');
 
-    return (data ?? []) as T[];
+    return (data ?? []) as TEntity[];
   }
 
-  async findOne(id: number): Promise<T> {
+  async findOne(id: number): Promise<TEntity> {
     const { data, error } = await this.supabase
       .getClient()
       .from(this.table)
@@ -55,14 +63,14 @@ export abstract class BaseCrudService<T> {
     if (error) throwSupabaseError(error, this.singularResource, 'buscar');
     if (!data) {
       throw new NotFoundException(
-        `${this.singularResource.charAt(0).toUpperCase() + this.singularResource.slice(1)} com ID ${id} não encontrado.`,
+        `${this.formatResource(this.singularResource)} com ID ${id} não encontrado.`,
       );
     }
 
-    return data as T;
+    return data as TEntity;
   }
 
-  async update(id: number, dto: Partial<T>): Promise<T> {
+  async update(id: number, dto: TUpdateDto): Promise<TEntity> {
     const { data, error } = await this.supabase
       .getClient()
       .from(this.table)
@@ -74,14 +82,14 @@ export abstract class BaseCrudService<T> {
     if (error) throwSupabaseError(error, this.singularResource, 'atualizar');
     if (!data) {
       throw new NotFoundException(
-        `${this.singularResource.charAt(0).toUpperCase() + this.singularResource.slice(1)} com ID ${id} não encontrado.`,
+        `${this.formatResource(this.singularResource)} com ID ${id} não encontrado.`,
       );
     }
 
-    return data as T;
+    return data as TEntity;
   }
 
-  async remove(id: number): Promise<T> {
+  async remove(id: number): Promise<TEntity> {
     const { data, error } = await this.supabase
       .getClient()
       .from(this.table)
@@ -93,10 +101,10 @@ export abstract class BaseCrudService<T> {
     if (error) throwSupabaseError(error, this.singularResource, 'remover');
     if (!data) {
       throw new NotFoundException(
-        `${this.singularResource.charAt(0).toUpperCase() + this.singularResource.slice(1)} com ID ${id} não encontrado para remoção.`,
+        `${this.formatResource(this.singularResource)} com ID ${id} não encontrado para remoção.`,
       );
     }
 
-    return data as T;
+    return data as TEntity;
   }
 }

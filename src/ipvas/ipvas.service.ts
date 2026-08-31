@@ -6,20 +6,12 @@ import { Ipva } from './entities/ipva.entity';
 import { BaseCrudService } from '../supabase/base-crud.service';
 
 @Injectable()
-export class IpvasService extends BaseCrudService<Ipva> {
+export class IpvasService extends BaseCrudService<Ipva, CreateIpvaDto, UpdateIpvaDto> {
   protected table = 'ipva';
   protected singularResource = 'o IPVA';
   protected pluralResource = 'os IPVAs';
 
-  constructor(protected readonly supabase: SupabaseService) {
+  constructor(supabase: SupabaseService) {
     super(supabase);
-  }
-
-  override create(dto: CreateIpvaDto): Promise<Ipva> {
-    return super.create(dto);
-  }
-
-  override update(id: number, dto: UpdateIpvaDto): Promise<Ipva> {
-    return super.update(id, dto);
   }
 }

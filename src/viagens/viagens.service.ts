@@ -6,21 +6,17 @@ import { Viagem } from './entities/viagem.entity';
 import { BaseCrudService } from '../supabase/base-crud.service';
 
 @Injectable()
-export class ViagensService extends BaseCrudService<Viagem> {
+export class ViagensService extends BaseCrudService<
+  Viagem,
+  CreateViagemDto,
+  UpdateViagemDto
+> {
   protected table = 'viagem';
   protected singularResource = 'a viagem';
   protected pluralResource = 'as viagens';
   protected selectQuery = '*, caminhao(*), motorista(*)';
 
-  constructor(protected readonly supabase: SupabaseService) {
+  constructor(supabase: SupabaseService) {
     super(supabase);
-  }
-
-  override create(dto: CreateViagemDto): Promise<Viagem> {
-    return super.create(dto);
-  }
-
-  override update(id: number, dto: UpdateViagemDto): Promise<Viagem> {
-    return super.update(id, dto);
   }
 }
