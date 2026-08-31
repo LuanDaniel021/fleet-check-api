@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CreatePneuDto } from './dto/create-pneus.dto';
-import { UpdatePneuDto } from './dto/update-pneus.dto';
+import { CreatePneuDto } from './dto/create-pneu.dto';
+import { UpdatePneuDto } from './dto/update-pneu.dto';
 import { SupabaseService } from '../supabase/supabase.service';
 import { Pneu } from './entities/pneu.entity';
 import { BaseCrudService } from '../supabase/base-crud.service';

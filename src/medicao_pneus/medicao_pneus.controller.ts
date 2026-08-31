@@ -18,8 +18,8 @@ import {
   ApiBadRequestResponse,
 } from '@nestjs/swagger';
 import { MedicaoPneusService } from './medicao_pneus.service';
-import { CreateMedicaoPneuDto } from './dto/create-medicao_pneus.dto';
-import { UpdateMedicaoPneuDto } from './dto/update-medicao_pneus.dto';
+import { CreateMedicaoPneuDto } from './dto/create-medicao_pneu.dto';
+import { UpdateMedicaoPneuDto } from './dto/update-medicao_pneu.dto';
 import { MedicaoPneu } from './entities/medicao_pneu.entity';
 
 @ApiTags('Medição de Pneus')

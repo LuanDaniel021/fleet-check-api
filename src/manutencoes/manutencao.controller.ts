@@ -23,7 +23,7 @@ import { UpdateManutencaoDto } from './dto/update-manutencao.dto';
 import { Manutencao } from './entities/manutencao.entity';
 
 @ApiTags('Manutenções')
-@Controller('manutencao')
+@Controller('manutencoes')
 export class ManutencaoController {
   constructor(private readonly manutencaoService: ManutencaoService) {}
 
