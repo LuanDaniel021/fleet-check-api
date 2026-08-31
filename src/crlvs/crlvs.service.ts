@@ -6,7 +6,11 @@ import { Crlv } from './entities/crlv.entity';
 import { BaseCrudService } from '../supabase/base-crud.service';
 
 @Injectable()
-export class CrlvsService extends BaseCrudService<Crlv, CreateCrlvDto, UpdateCrlvDto> {
+export class CrlvsService extends BaseCrudService<
+  Crlv,
+  CreateCrlvDto,
+  UpdateCrlvDto
+> {
   protected table = 'crlv';
   protected singularResource = 'o CRLV';
   protected pluralResource = 'os CRLVs';

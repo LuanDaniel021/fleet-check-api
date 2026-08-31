@@ -31,7 +31,10 @@ export class CreateMedicaoPneuDto implements TablesInsert<'medicao_pneu'> {
     description: 'Data em que a medição foi realizada (formato YYYY-MM-DD)',
     example: '2026-08-27',
   })
-  @IsDateString({}, { message: 'A data da medição deve estar no formato YYYY-MM-DD.' })
+  @IsDateString(
+    {},
+    { message: 'A data da medição deve estar no formato YYYY-MM-DD.' },
+  )
   @IsOptional()
   data_medicao?: string | null;
 }

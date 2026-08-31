@@ -23,7 +23,10 @@ export class CreateViagemDto implements TablesInsert<'viagem'> {
     description: 'Data e hora de início da viagem (formato ISO 8601)',
     example: '2026-08-27T10:00:00Z',
   })
-  @IsDateString({}, { message: 'A data de início da viagem deve estar em formato ISO 8601.' })
+  @IsDateString(
+    {},
+    { message: 'A data de início da viagem deve estar em formato ISO 8601.' },
+  )
   @IsOptional()
   data_inicio?: string | null;
 
@@ -31,7 +34,10 @@ export class CreateViagemDto implements TablesInsert<'viagem'> {
     description: 'Data e hora de término da viagem (formato ISO 8601)',
     example: '2026-08-28T18:00:00Z',
   })
-  @IsDateString({}, { message: 'A data de fim da viagem deve estar em formato ISO 8601.' })
+  @IsDateString(
+    {},
+    { message: 'A data de fim da viagem deve estar em formato ISO 8601.' },
+  )
   @IsOptional()
   data_fim?: string | null;
 

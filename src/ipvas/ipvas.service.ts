@@ -6,7 +6,11 @@ import { Ipva } from './entities/ipva.entity';
 import { BaseCrudService } from '../supabase/base-crud.service';
 
 @Injectable()
-export class IpvasService extends BaseCrudService<Ipva, CreateIpvaDto, UpdateIpvaDto> {
+export class IpvasService extends BaseCrudService<
+  Ipva,
+  CreateIpvaDto,
+  UpdateIpvaDto
+> {
   protected table = 'ipva';
   protected singularResource = 'o IPVA';
   protected pluralResource = 'os IPVAs';

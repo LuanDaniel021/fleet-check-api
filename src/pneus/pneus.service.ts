@@ -6,7 +6,11 @@ import { Pneu } from './entities/pneu.entity';
 import { BaseCrudService } from '../supabase/base-crud.service';
 
 @Injectable()
-export class PneusService extends BaseCrudService<Pneu, CreatePneuDto, UpdatePneuDto> {
+export class PneusService extends BaseCrudService<
+  Pneu,
+  CreatePneuDto,
+  UpdatePneuDto
+> {
   protected table = 'pneu';
   protected singularResource = 'o pneu';
   protected pluralResource = 'os pneus';

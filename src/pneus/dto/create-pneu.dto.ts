@@ -31,7 +31,10 @@ export class CreatePneuDto implements TablesInsert<'pneu'> {
     description: 'Profundidade inicial do sulco da banda de rodagem (em mm)',
     example: 15.5,
   })
-  @IsNumber({}, { message: 'A profundidade inicial do pneu deve ser um número.' })
+  @IsNumber(
+    {},
+    { message: 'A profundidade inicial do pneu deve ser um número.' },
+  )
   @IsOptional()
   sulco_inicial_mm?: number | null;
 

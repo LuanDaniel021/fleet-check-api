@@ -29,7 +29,10 @@ export class CreateManutencaoDto implements TablesInsert<'manutencao'> {
     description: 'Quilometragem do caminhão no momento do serviço',
     example: 125000.0,
   })
-  @IsNumber({}, { message: 'A quilometragem da manutenção deve ser um número.' })
+  @IsNumber(
+    {},
+    { message: 'A quilometragem da manutenção deve ser um número.' },
+  )
   @IsOptional()
   km_realizacao?: number | null;
 
@@ -37,7 +40,10 @@ export class CreateManutencaoDto implements TablesInsert<'manutencao'> {
     description: 'Data de realização da manutenção (YYYY-MM-DD)',
     example: '2026-08-20',
   })
-  @IsDateString({}, { message: 'A data da manutenção deve estar no formato YYYY-MM-DD.' })
+  @IsDateString(
+    {},
+    { message: 'A data da manutenção deve estar no formato YYYY-MM-DD.' },
+  )
   @IsOptional()
   data_manutencao?: string | null;
 

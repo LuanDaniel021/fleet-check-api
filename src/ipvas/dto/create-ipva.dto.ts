@@ -29,7 +29,10 @@ export class CreateIpvaDto implements TablesInsert<'ipva'> {
     description: 'Data de vencimento do IPVA (formato YYYY-MM-DD)',
     example: '2026-03-15',
   })
-  @IsDateString({}, { message: 'A data de vencimento deve estar no formato YYYY-MM-DD.' })
+  @IsDateString(
+    {},
+    { message: 'A data de vencimento deve estar no formato YYYY-MM-DD.' },
+  )
   @IsOptional()
   data_vencimento?: string | null;
 
