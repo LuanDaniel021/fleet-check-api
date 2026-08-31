@@ -45,6 +45,7 @@ export class UsersService {
       user: {
         id: data.user?.id,
         email: data.user?.email,
+        access_token: data.session?.access_token ?? '',
       },
     };
   }
