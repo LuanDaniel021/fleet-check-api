@@ -3,10 +3,10 @@ import { CreateIpvaDto } from './dto/create-ipva.dto';
 import { UpdateIpvaDto } from './dto/update-ipva.dto';
 import { SupabaseService } from '../supabase/supabase.service';
 import { Ipva } from './entities/ipva.entity';
-import { BaseCrudService } from '../supabase/base-crud.service';
+import { SupabaseCrudService } from '../supabase/supabase-crud.service';
 
 @Injectable()
-export class IpvasService extends BaseCrudService<
+export class IpvasService extends SupabaseCrudService<
   Ipva,
   CreateIpvaDto,
   UpdateIpvaDto

@@ -5,6 +5,7 @@ import {
   Param,
   Patch,
   UseGuards,
+  Delete,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { UsersService } from './users.service';
@@ -33,8 +34,8 @@ export class UsersController {
     return this.usersService.registry(dto);
   }
 
-  @UseGuards(SupabaseAuthGuard)
   @Patch('update/:id')
+  @UseGuards(SupabaseAuthGuard)
   @ApiOperation({ summary: 'Atualiza dados de um usuário pelo ID' })
   update(
     @Param('id') id: string,
@@ -43,7 +44,7 @@ export class UsersController {
     return this.usersService.update(id, dto);
   }
 
-  @Patch('delete/:id')
+  @Delete('delete/:id')
   @UseGuards(SupabaseAuthGuard)
   @ApiOperation({ summary: 'Atualiza dados de um usuário pelo ID' })
   delete(@Param('id') id: string) {

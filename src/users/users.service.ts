@@ -69,9 +69,9 @@ export class UsersService {
   }
 
   async delete(userId: string) {
-    const adminClient = this.supabase.getClient();
+    const client = this.supabase.getClient();
 
-    const { error } = await adminClient.auth.admin.deleteUser(userId);
+    const { error } = await client.auth.admin.deleteUser(userId);
 
     if (error) {
       throw new BadRequestException(`Erro ao excluir: ${error.message}`);

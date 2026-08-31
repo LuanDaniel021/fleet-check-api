@@ -7,7 +7,7 @@ import { SupabaseService } from './supabase.service';
 import { throwSupabaseError } from './supabase-error.util';
 
 @Injectable()
-export abstract class BaseCrudService<
+export abstract class SupabaseCrudService<
   TEntity,
   TCreateDto = Partial<TEntity>,
   TUpdateDto = Partial<TEntity>,

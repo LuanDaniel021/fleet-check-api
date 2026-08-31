@@ -3,10 +3,10 @@ import { CreateCrlvDto } from './dto/create-crlv.dto';
 import { UpdateCrlvDto } from './dto/update-crlv.dto';
 import { SupabaseService } from '../supabase/supabase.service';
 import { Crlv } from './entities/crlv.entity';
-import { BaseCrudService } from '../supabase/base-crud.service';
+import { SupabaseCrudService } from '../supabase/supabase-crud.service';
 
 @Injectable()
-export class CrlvsService extends BaseCrudService<
+export class CrlvsService extends SupabaseCrudService<
   Crlv,
   CreateCrlvDto,
   UpdateCrlvDto

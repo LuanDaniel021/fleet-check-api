@@ -3,10 +3,10 @@ import { CreateManutencaoDto } from './dto/create-manutencao.dto';
 import { UpdateManutencaoDto } from './dto/update-manutencao.dto';
 import { SupabaseService } from '../supabase/supabase.service';
 import { Manutencao } from './entities/manutencao.entity';
-import { BaseCrudService } from '../supabase/base-crud.service';
+import { SupabaseCrudService } from '../supabase/supabase-crud.service';
 
 @Injectable()
-export class ManutencaoService extends BaseCrudService<
+export class ManutencaoService extends SupabaseCrudService<
   Manutencao,
   CreateManutencaoDto,
   UpdateManutencaoDto

@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { SupabaseService } from '../supabase/supabase.service';
-import { BaseCrudService } from '../supabase/base-crud.service';
+import { SupabaseCrudService } from '../supabase/supabase-crud.service';
 import { Caminhao } from './entities/caminhao.entity';
 import { CreateCaminhaoDto } from './dto/create-caminhao.dto';
 import { UpdateCaminhaoDto } from './dto/update-caminhao.dto';
 
 @Injectable()
-export class CaminhoesService extends BaseCrudService<
+export class CaminhoesService extends SupabaseCrudService<
   Caminhao,
   CreateCaminhaoDto,
   UpdateCaminhaoDto

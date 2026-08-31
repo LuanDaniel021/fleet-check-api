@@ -3,10 +3,10 @@ import { CreateMotoristaDto } from './dto/create-motorista.dto';
 import { UpdateMotoristaDto } from './dto/update-motorista.dto';
 import { SupabaseService } from '../supabase/supabase.service';
 import { Motorista } from './entities/motorista.entity';
-import { BaseCrudService } from '../supabase/base-crud.service';
+import { SupabaseCrudService } from '../supabase/supabase-crud.service';
 
 @Injectable()
-export class MotoristasService extends BaseCrudService<
+export class MotoristasService extends SupabaseCrudService<
   Motorista,
   CreateMotoristaDto,
   UpdateMotoristaDto
