@@ -7,7 +7,7 @@ export class CreateMotoristaDto implements TablesInsert<'motorista'> {
     description: 'Nome completo do motorista',
     example: 'Carlos Silva',
   })
-  @IsString()
+  @IsString({ message: 'O nome do motorista deve ser um texto.' })
   @IsOptional()
   nome?: string | null;
 
@@ -15,7 +15,7 @@ export class CreateMotoristaDto implements TablesInsert<'motorista'> {
     description: 'Número do CPF do motorista',
     example: '123.456.789-00',
   })
-  @IsString()
+  @IsString({ message: 'O CPF deve ser um texto.' })
   @IsOptional()
   cpf?: string | null;
 
@@ -23,7 +23,7 @@ export class CreateMotoristaDto implements TablesInsert<'motorista'> {
     description: 'Número do registro da CNH',
     example: '12345678900',
   })
-  @IsString()
+  @IsString({ message: 'O número da CNH deve ser um texto.' })
   @IsOptional()
   numero_cnh?: string | null;
 
@@ -31,7 +31,7 @@ export class CreateMotoristaDto implements TablesInsert<'motorista'> {
     description: 'Categoria da CNH (ex: E, D, AE)',
     example: 'E',
   })
-  @IsString()
+  @IsString({ message: 'A categoria da CNH deve ser um texto.' })
   @IsOptional()
   categoria_cnh?: string | null;
 }

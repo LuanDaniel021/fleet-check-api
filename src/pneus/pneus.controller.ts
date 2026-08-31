@@ -18,8 +18,8 @@ import {
   ApiBadRequestResponse,
 } from '@nestjs/swagger';
 import { PneusService } from './pneus.service';
-import { CreatePneuDto } from './dto/create-pneus.dto';
-import { UpdatePneuDto } from './dto/update-pneus.dto';
+import { CreatePneuDto } from './dto/create-pneu.dto';
+import { UpdatePneuDto } from './dto/update-pneu.dto';
 import { Pneu } from './entities/pneu.entity';
 
 @ApiTags('Pneus')

@@ -25,7 +25,7 @@ export class CreateCaminhaoDto implements TablesInsert<'caminhao'> {
     description: 'ID do registro de CRLV a ser vinculado',
     example: 3,
   })
-  @IsInt({ message: 'O crlv_id deve ser um número inteiro.' })
+  @IsInt({ message: 'O campo crlv_id deve ser um número inteiro.' })
   @IsOptional()
   crlv_id?: number | null;
 
@@ -33,7 +33,7 @@ export class CreateCaminhaoDto implements TablesInsert<'caminhao'> {
     description: 'ID do motorista responsável',
     example: 12,
   })
-  @IsInt({ message: 'O motorista_id deve ser um número inteiro.' })
+  @IsInt({ message: 'O campo motorista_id deve ser um número inteiro.' })
   @IsOptional()
   motorista_id?: number | null;
 }
