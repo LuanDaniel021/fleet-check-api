@@ -53,7 +53,7 @@ export class CaminhoesService {
 
     if (!data) {
       throw new NotFoundException(
-        `Caminhão com ID ${id} não pôde ser atualizado.`,
+        `Caminhão com ID ${id} não encontrado.`,
       );
     }
 
