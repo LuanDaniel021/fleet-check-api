@@ -19,4 +19,18 @@ export class CrlvsService extends SupabaseCrudService<
   constructor(supabase: SupabaseService) {
     super(supabase);
   }
+
+  async findOneByPlate(placa:string):Promise<Crlv>{
+    const client = this.supabase.getClient()
+    const {data, error} = await client
+      .from (this.table)
+      .select(this.selectQuery)
+      .eq('placa', placa)
+      .single()
+
+      if (error) throw error 
+      return data
+  }
 }
+
+

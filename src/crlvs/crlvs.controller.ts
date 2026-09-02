@@ -63,6 +63,19 @@ export class CrlvsController {
     return this.crlvsService.findOne(id);
   }
 
+  @Get(':placa')
+  @ApiOperation({ summary: 'Busca um caminhão pela Placa' })
+  @ApiParam({ name: 'placa', description: 'Placa do caminhão', example: 1 })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Caminhão encontrado.',
+    type: Caminhao,
+  })
+  @ApiNotFoundResponse({ description: 'Caminhão não encontrado.' })
+  findOneByPlate(@Param('placa') placa: number): Promise<Crlv> {
+    return this.crlvsService.findOneByPlate(placa);
+  }
+
   @Patch(':id')
   @ApiOperation({ summary: 'Atualiza dados de um CRLV existente' })
   @ApiParam({ name: 'id', description: 'ID do CRLV', example: 3 })
