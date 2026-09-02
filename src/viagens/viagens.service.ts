@@ -38,7 +38,7 @@ export class ViagensService {
 
     if (error) throwSupabaseError(error, 'as viagens', 'buscar');
 
-    return data || [];
+    return data ?? [];
   }
 
   async findOne(id: number): Promise<Viagem> {
