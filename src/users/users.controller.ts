@@ -2,11 +2,12 @@ import {
   Controller,
   Post,
   Body,
-  Param,
   Patch,
   UseGuards,
   Delete,
+  Req,
 } from '@nestjs/common';
+import { Request } from 'express';
 import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { LoginUserDto } from './dto/login-users.dto';
@@ -34,20 +35,20 @@ export class UsersController {
     return this.usersService.registry(dto);
   }
 
-  @Patch('update/:id')
+  @Patch('update')
   @UseGuards(SupabaseAuthGuard)
-  @ApiOperation({ summary: 'Atualiza dados de um usuário pelo ID' })
+  @ApiOperation({ summary: 'Atualiza os dados do usuário autenticado' })
   update(
-    @Param('id') id: string,
+    @Req() request: Request & { user: { id: string } },
     @Body() dto: UpdateUserDto,
   ): Promise<UpdateResponse> {
-    return this.usersService.update(id, dto);
+    return this.usersService.update(request.user.id, dto);
   }
 
-  @Delete('delete/:id')
+  @Delete('delete')
   @UseGuards(SupabaseAuthGuard)
-  @ApiOperation({ summary: 'Atualiza dados de um usuário pelo ID' })
-  delete(@Param('id') id: string) {
-    return this.usersService.delete(id);
+  @ApiOperation({ summary: 'Exclui o usuário autenticado' })
+  delete(@Req() request: Request & { user: { id: string } }) {
+    return this.usersService.delete(request.user.id);
   }
 }
