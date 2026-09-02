@@ -29,6 +29,7 @@ export class UsersService {
     const { data, error } = await client.auth.admin.createUser({
       email: dto.email,
       password: dto.password,
+      email_confirm: true,
       user_metadata: {
         nome: dto.nome,
       },
