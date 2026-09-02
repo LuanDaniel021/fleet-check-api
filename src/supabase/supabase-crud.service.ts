@@ -19,8 +19,10 @@ type TableNameWithId = {
 export abstract class SupabaseCrudService<
   TTable extends TableNameWithId,
   TEntity,
-  TCreateDto extends PublicTables[TTable]['Insert'] = PublicTables[TTable]['Insert'],
-  TUpdateDto extends PublicTables[TTable]['Update'] = PublicTables[TTable]['Update'],
+  TCreateDto extends PublicTables[TTable]['Insert'] =
+    PublicTables[TTable]['Insert'],
+  TUpdateDto extends PublicTables[TTable]['Update'] =
+    PublicTables[TTable]['Update'],
 > {
   protected abstract table: TTable;
   protected abstract singularResource: string;
@@ -48,7 +50,7 @@ export abstract class SupabaseCrudService<
       );
     }
 
-    return data as TEntity;
+    return data;
   }
 
   async findAll(): Promise<TEntity[]> {
@@ -59,7 +61,7 @@ export abstract class SupabaseCrudService<
 
     if (error) throwSupabaseError(error, this.pluralResource, 'buscar');
 
-    return (data ?? []) as TEntity[];
+    return data ?? [];
   }
 
   async findOne(id: number): Promise<TEntity> {
@@ -77,7 +79,7 @@ export abstract class SupabaseCrudService<
       );
     }
 
-    return data as TEntity;
+    return data;
   }
 
   async update(id: number, dto: TUpdateDto): Promise<TEntity> {
@@ -96,7 +98,7 @@ export abstract class SupabaseCrudService<
       );
     }
 
-    return data as TEntity;
+    return data;
   }
 
   async remove(id: number): Promise<TEntity> {
@@ -115,6 +117,6 @@ export abstract class SupabaseCrudService<
       );
     }
 
-    return data as TEntity;
+    return data;
   }
 }
