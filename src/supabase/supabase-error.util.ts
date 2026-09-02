@@ -26,7 +26,13 @@ export function throwSupabaseError(
     );
   }
 
-  if (error.code === '23503' || error.code?.startsWith('22')) {
+  if (error.code === '23503') {
+    throw new BadRequestException(
+      `Não foi possível ${operation} ${resource}: dados inválidos.`,
+    );
+  }
+
+  if (error.code?.startsWith('22')) {
     throw new BadRequestException(
       `Não foi possível ${operation} ${resource}: dados inválidos.`,
     );
