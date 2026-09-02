@@ -24,11 +24,12 @@ export class CrlvsService extends SupabaseCrudService<
     const client = this.supabase.getClient()
     const {data, error} = await client
       .from (this.table)
-      .select(this.selectQuery)
+      .select()
       .eq('placa', placa)
       .single()
 
-      if (error) throw error 
+      if (error) throw error
+
       return data as unknown as Crlv
   }
 }
