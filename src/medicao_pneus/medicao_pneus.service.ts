@@ -7,11 +7,12 @@ import { SupabaseCrudService } from '../supabase/supabase-crud.service';
 
 @Injectable()
 export class MedicaoPneusService extends SupabaseCrudService<
+  'medicao_pneu',
   MedicaoPneu,
   CreateMedicaoPneuDto,
   UpdateMedicaoPneuDto
 > {
-  protected table = 'medicao_pneu';
+  protected table: 'medicao_pneu' = 'medicao_pneu';
   protected singularResource = 'a medição de pneu';
   protected pluralResource = 'as medições de pneus';
 

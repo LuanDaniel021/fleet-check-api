@@ -7,11 +7,12 @@ import { UpdateCaminhaoDto } from './dto/update-caminhao.dto';
 
 @Injectable()
 export class CaminhoesService extends SupabaseCrudService<
+  'caminhao',
   Caminhao,
   CreateCaminhaoDto,
   UpdateCaminhaoDto
 > {
-  protected table = 'caminhao';
+  protected table: 'caminhao' = 'caminhao';
   protected singularResource = 'o caminhão';
   protected pluralResource = 'os caminhões';
   protected selectQuery = '*, crlv(*), motorista(*)';

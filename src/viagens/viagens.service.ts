@@ -7,11 +7,12 @@ import { SupabaseCrudService } from '../supabase/supabase-crud.service';
 
 @Injectable()
 export class ViagensService extends SupabaseCrudService<
+  'viagem',
   Viagem,
   CreateViagemDto,
   UpdateViagemDto
 > {
-  protected table = 'viagem';
+  protected table: 'viagem' = 'viagem';
   protected singularResource = 'a viagem';
   protected pluralResource = 'as viagens';
   protected selectQuery = '*, caminhao(*), motorista(*)';

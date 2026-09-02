@@ -7,11 +7,12 @@ import { SupabaseCrudService } from '../supabase/supabase-crud.service';
 
 @Injectable()
 export class PneusService extends SupabaseCrudService<
+  'pneu',
   Pneu,
   CreatePneuDto,
   UpdatePneuDto
 > {
-  protected table = 'pneu';
+  protected table: 'pneu' = 'pneu';
   protected singularResource = 'o pneu';
   protected pluralResource = 'os pneus';
 

@@ -7,11 +7,12 @@ import { SupabaseCrudService } from '../supabase/supabase-crud.service';
 
 @Injectable()
 export class CrlvsService extends SupabaseCrudService<
+  'crlv',
   Crlv,
   CreateCrlvDto,
   UpdateCrlvDto
 > {
-  protected table = 'crlv';
+  protected table: 'crlv' = 'crlv';
   protected singularResource = 'o CRLV';
   protected pluralResource = 'os CRLVs';
 

@@ -5,14 +5,24 @@ import {
 } from '@nestjs/common';
 import { SupabaseService } from './supabase.service';
 import { throwSupabaseError } from './supabase-error.util';
+import { Database } from './supabase.types';
+
+type PublicTables = Database['public']['Tables'];
+type TableName = keyof PublicTables;
+type TableNameWithId = {
+  [Table in TableName]: 'id' extends keyof PublicTables[Table]['Row']
+    ? Table
+    : never;
+}[TableName];
 
 @Injectable()
 export abstract class SupabaseCrudService<
+  TTable extends TableNameWithId,
   TEntity,
-  TCreateDto = Partial<TEntity>,
-  TUpdateDto = Partial<TEntity>,
+  TCreateDto extends PublicTables[TTable]['Insert'] = PublicTables[TTable]['Insert'],
+  TUpdateDto extends PublicTables[TTable]['Update'] = PublicTables[TTable]['Update'],
 > {
-  protected abstract table: string;
+  protected abstract table: TTable;
   protected abstract singularResource: string;
   protected abstract pluralResource: string;
   protected selectQuery = '*';
@@ -26,8 +36,8 @@ export abstract class SupabaseCrudService<
   async create(dto: TCreateDto): Promise<TEntity> {
     const { data, error } = await this.supabase
       .getClient()
-      .from(this.table)
-      .insert(dto)
+      .from(this.table as never)
+      .insert(dto as never)
       .select(this.selectQuery)
       .single();
 
@@ -44,7 +54,7 @@ export abstract class SupabaseCrudService<
   async findAll(): Promise<TEntity[]> {
     const { data, error } = await this.supabase
       .getClient()
-      .from(this.table)
+      .from(this.table as never)
       .select(this.selectQuery);
 
     if (error) throwSupabaseError(error, this.pluralResource, 'buscar');
@@ -55,7 +65,7 @@ export abstract class SupabaseCrudService<
   async findOne(id: number): Promise<TEntity> {
     const { data, error } = await this.supabase
       .getClient()
-      .from(this.table)
+      .from(this.table as never)
       .select(this.selectQuery)
       .eq('id', id)
       .single();
@@ -73,8 +83,8 @@ export abstract class SupabaseCrudService<
   async update(id: number, dto: TUpdateDto): Promise<TEntity> {
     const { data, error } = await this.supabase
       .getClient()
-      .from(this.table)
-      .update(dto)
+      .from(this.table as never)
+      .update(dto as never)
       .eq('id', id)
       .select(this.selectQuery)
       .single();
@@ -92,7 +102,7 @@ export abstract class SupabaseCrudService<
   async remove(id: number): Promise<TEntity> {
     const { data, error } = await this.supabase
       .getClient()
-      .from(this.table)
+      .from(this.table as never)
       .delete()
       .eq('id', id)
       .select(this.selectQuery)

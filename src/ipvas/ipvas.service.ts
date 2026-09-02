@@ -7,11 +7,12 @@ import { SupabaseCrudService } from '../supabase/supabase-crud.service';
 
 @Injectable()
 export class IpvasService extends SupabaseCrudService<
+  'ipva',
   Ipva,
   CreateIpvaDto,
   UpdateIpvaDto
 > {
-  protected table = 'ipva';
+  protected table: 'ipva' = 'ipva';
   protected singularResource = 'o IPVA';
   protected pluralResource = 'os IPVAs';
 
