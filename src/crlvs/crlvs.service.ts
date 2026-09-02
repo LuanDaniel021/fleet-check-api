@@ -29,7 +29,7 @@ export class CrlvsService extends SupabaseCrudService<
       .single()
 
       if (error) throw error 
-      return data
+      return data as unknown as Crlv
   }
 }
 

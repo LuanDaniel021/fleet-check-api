@@ -69,10 +69,10 @@ export class CrlvsController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Caminhão encontrado.',
-    type: Caminhao,
+    type: Crlv,
   })
   @ApiNotFoundResponse({ description: 'Caminhão não encontrado.' })
-  findOneByPlate(@Param('placa') placa: number): Promise<Crlv> {
+  findOneByPlate(@Param('placa') placa: string): Promise<Crlv> {
     return this.crlvsService.findOneByPlate(placa);
   }
 
