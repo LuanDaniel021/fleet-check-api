@@ -63,9 +63,9 @@ export class CrlvsController {
     return this.crlvsService.findOne(id);
   }
 
-  @Get(':placa')
+  @Get('/placa/:placa')
   @ApiOperation({ summary: 'Busca um caminhão pela Placa' })
-  @ApiParam({ name: 'placa', description: 'Placa do caminhão', example: 1 })
+  @ApiParam({ name: 'placa', description: 'Placa do caminhão', example: "" })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Caminhão encontrado.',

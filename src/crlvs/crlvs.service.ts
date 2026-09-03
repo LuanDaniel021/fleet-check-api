@@ -15,6 +15,7 @@ export class CrlvsService extends SupabaseCrudService<
   protected table: 'crlv' = 'crlv';
   protected singularResource = 'o CRLV';
   protected pluralResource = 'os CRLVs';
+  protected selectQuery = '*,caminhao(*)'
 
   constructor(supabase: SupabaseService) {
     super(supabase);
@@ -24,10 +25,10 @@ export class CrlvsService extends SupabaseCrudService<
     const client = this.supabase.getClient()
     const {data, error} = await client
       .from (this.table)
-      .select()
+      .select(this.selectQuery)
       .eq('placa', placa)
       .single()
-
+      console.log(placa)
       if (error) throw error
 
       return data as unknown as Crlv
